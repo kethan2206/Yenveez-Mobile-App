@@ -129,13 +129,13 @@ public class Registration extends AppCompatActivity {
                                 startActivity(intent);
                                 Toast.makeText(Registration.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(Registration.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Registration.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } else {
                     progressBarReg.setVisibility(View.GONE);
-                    Toast.makeText(Registration.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registration.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
