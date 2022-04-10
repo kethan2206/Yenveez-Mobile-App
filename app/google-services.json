@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "277099104794",
+    "project_id": "yenveez-mobile-app",
+    "storage_bucket": "yenveez-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277099104794:android:879d0204eda3bc02739fa3",
+        "android_client_info": {
+          "package_name": "com.example.yenveez_mobile_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVhnLb_cyj35iPpT5AV_Os0WFpwJN3dzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277099104794:android:4e7e55f42db712a5739fa3",
+        "android_client_info": {
+          "package_name": "com.example.yenveez_mobile_app.Login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277099104794-v6abd84mml8a1uf0gc3gk2d69lvko739.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yenveez_mobile_app.Login",
+            "certificate_hash": "0f2a07bc1e7b14d235968b0dfd0a965b6243f49d"
+          }
+        },
+        {
+          "client_id": "277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVhnLb_cyj35iPpT5AV_Os0WFpwJN3dzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
