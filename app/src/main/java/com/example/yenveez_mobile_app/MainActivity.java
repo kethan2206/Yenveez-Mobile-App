@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    //onClick Logout Button
     public void Logout(View view){
         progressBarMain.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {

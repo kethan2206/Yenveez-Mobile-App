@@ -28,10 +28,11 @@ public class Splash_Screen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        //Handler is used for making a delay of 0.8 sec for displaying the splash screen
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser(); //checking if user is already exist or not
                 if (user == null){
                     startActivity(new Intent(Splash_Screen.this, Login.class));
                 } else {

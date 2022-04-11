@@ -21,6 +21,8 @@ public class Reset_Password extends AppCompatActivity {
 
     public void Reset(View view){
         String resetEmail = editText_EmailReset.getText().toString();
+
+        //String expression for validating input email
         String Expn =
                 "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                         +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -41,6 +43,7 @@ public class Reset_Password extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    //pre define function for sending reset link to the input email
                     mAuth.sendPasswordResetEmail(resetEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

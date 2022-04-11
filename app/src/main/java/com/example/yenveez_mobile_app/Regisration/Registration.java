@@ -27,12 +27,14 @@ import java.util.HashMap;
 
 public class Registration extends AppCompatActivity {
 
+    //onClick Register Button
     public void Register(View view){
         String name = editText_name.getText().toString();
         String email = editText_EmailReg.getText().toString();
         String password = editText_passReg.getText().toString();
         String phone = editText_Phone.getText().toString();
 
+        //String expression for verifying the pattern of an email
         String Expn =
                 "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                         +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -41,6 +43,7 @@ public class Registration extends AppCompatActivity {
                         +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                         +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
+        //Checking all conditions for all required field
         if(name.isEmpty()){
             editText_name.setError("Please provide a Name");
             editText_name.requestFocus();
@@ -65,14 +68,19 @@ public class Registration extends AppCompatActivity {
             editText_EmailReg.setError("Provide a valid Email");
             editText_EmailReg.requestFocus();
             return;
+        } else if (phone.length() < 10){
+            editText_Phone.setError("Provide a valid Phone number");
+            editText_Phone.requestFocus();
         }
         else {
             CreateUser(name,email,password,phone);
         }
     }
 
+    //onClick 'Already registered' button
     public void ClickToLogin(View view){
         progressBarReg.setVisibility(View.VISIBLE);
+        //Handler is used for making a delay of 1 sec
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -84,8 +92,8 @@ public class Registration extends AppCompatActivity {
 
     EditText editText_name, editText_EmailReg, editText_passReg, editText_Phone;
     ProgressBar progressBarReg;
-    FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
+    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
+    DatabaseReference databaseReference; //Creating reference for Database
 
     @SuppressLint("CutPasteId")
     @Override
@@ -99,9 +107,10 @@ public class Registration extends AppCompatActivity {
         editText_Phone = findViewById(R.id.editText_Phone);
         progressBarReg = findViewById(R.id.progressBarReg);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
     }
 
+    //Function for creating new User
     private void CreateUser(String name, String email, String password, String phone){
         progressBarReg.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -111,15 +120,16 @@ public class Registration extends AppCompatActivity {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     assert user != null;
                     String userId = user.getUid();
-                    databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                    databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
                             .child(userId);
-                    HashMap<String, String> hashMap = new HashMap<>();
+                    HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
                     hashMap.put("userId",userId);
                     hashMap.put("userName",name);
                     hashMap.put("userEmail",email);
                     hashMap.put("userPhone",phone);
                     hashMap.put("imageUrl","default");
 
+                    //setting the value of database as the hashMap to get all the data stored in the Hashmap
                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

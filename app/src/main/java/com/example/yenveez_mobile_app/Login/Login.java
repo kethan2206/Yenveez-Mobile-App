@@ -24,10 +24,12 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
+    //onClick Login Button
     public void login(View view){
         String Email = editText_EmailLog.getText().toString();
         String Password = editText_PasswordLog.getText().toString();
 
+        //String expression for verifying the pattern of an email
         String Expn =
                 "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                         +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -36,6 +38,7 @@ public class Login extends AppCompatActivity {
                         +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                         +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
+        //Checking all conditions for email and password
         if (Email.isEmpty()) {
             editText_EmailLog.setError("Please provide an Email");
             editText_EmailLog.requestFocus();
@@ -57,8 +60,10 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    //onClick Forgot password button
     public void ForgotPass(View view){
         progressBarLog.setVisibility(View.VISIBLE);
+        //Handler is used for making a delay of 1 sec once user click on Forgot Password button
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -68,8 +73,10 @@ public class Login extends AppCompatActivity {
         },1000);
     }
 
+    //onClick Register button
     public void CreateAcc(View view){
         progressBarLog.setVisibility(View.VISIBLE);
+        //Handler is used for making a delay of 1 sec
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -82,7 +89,7 @@ public class Login extends AppCompatActivity {
     EditText editText_EmailLog, editText_PasswordLog;
     ProgressBar progressBarLog;
 
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +100,10 @@ public class Login extends AppCompatActivity {
         editText_PasswordLog = findViewById(R.id.editText_PasswordLog);
         progressBarLog = findViewById(R.id.progressBarLog);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
     }
 
+    //Login function
     private void UserLogin(String Email, String Password) {
         progressBarLog.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -104,7 +112,7 @@ public class Login extends AppCompatActivity {
                 progressBarLog.setVisibility(View.GONE);
                 if (task.isSuccessful()){
                     Intent intent = new Intent(Login.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK); //Used to kill the login activity once it go to the MainActivity
                     startActivity(intent);
                     Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                     finish();
