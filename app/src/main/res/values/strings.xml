@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Yenveez Mobile App</string>
+    <string name="default_web_client" translatable="false">277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com</string>
 </resources>

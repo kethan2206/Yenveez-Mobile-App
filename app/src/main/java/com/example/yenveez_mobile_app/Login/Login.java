@@ -1,11 +1,13 @@
 package com.example.yenveez_mobile_app.Login;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -16,11 +18,24 @@ import com.example.yenveez_mobile_app.R;
 import com.example.yenveez_mobile_app.Regisration.Registration;
 import com.example.yenveez_mobile_app.Reset_Password;
 import com.example.yenveez_mobile_app.Splash.Splash_Screen;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
 
@@ -68,7 +83,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(Login.this, Reset_Password.class));
-                finish();
+                progressBarLog.setVisibility(View.GONE);
             }
         },1000);
     }
@@ -81,15 +96,28 @@ public class Login extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(Login.this, Registration.class));
+                progressBarLog.setVisibility(View.GONE);
                 finish();
             }
         },1000);
     }
 
+    //onClick google Sign in Button
+
     EditText editText_EmailLog, editText_PasswordLog;
     ProgressBar progressBarLog;
 
     FirebaseAuth mAuth; //Creating reference for Firebase Authentication
+    SignInButton signInButton;
+
+    GoogleSignInClient mGoogleSignInClient;
+
+    DatabaseReference databaseReference;
+
+    private static final int RC_SIGN_IN = 100;
+
+    private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
+    private boolean showOneTapUI = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +129,26 @@ public class Login extends AppCompatActivity {
         progressBarLog = findViewById(R.id.progressBarLog);
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
+
+        signInButton = findViewById(R.id.signInbutton);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+
+        //Configure Google Sign in
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signInButton = findViewById(R.id.signInbutton);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignIn();
+            }
+        });
+
     }
 
     //Login function
@@ -121,5 +169,65 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void SignIn(){
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                fireBaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                //Google Sign in Failed
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void fireBaseAuthWithGoogle(GoogleSignInAccount acct){
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            assert user != null;
+                            String userId = user.getUid();
+                            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Login.this);
+                            String name = account.getDisplayName();
+                            String email = account.getEmail();
+                            databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
+                                    .child(userId);
+                            HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
+                            hashMap.put("userId",userId);
+                            hashMap.put("userName",name);
+                            hashMap.put("userEmail",email);
+                            hashMap.put("userPhone","null");
+                            hashMap.put("imageUrl","default");
+                            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        startActivity(new Intent(Login.this,MainActivity.class));
+                                        finish();
+                                        Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
