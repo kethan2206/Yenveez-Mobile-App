@@ -30,7 +30,7 @@
             android:name=".Login.Login"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MainClass.MainActivity"
             android:exported="true" />
     </application>
 

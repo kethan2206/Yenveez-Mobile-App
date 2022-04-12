@@ -1,24 +1,20 @@
 package com.example.yenveez_mobile_app.Login;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.yenveez_mobile_app.MainActivity;
+import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.R;
 import com.example.yenveez_mobile_app.Regisration.Registration;
 import com.example.yenveez_mobile_app.Reset_Password;
-import com.example.yenveez_mobile_app.Splash.Splash_Screen;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -114,10 +110,8 @@ public class Login extends AppCompatActivity {
 
     DatabaseReference databaseReference;
 
-    private static final int RC_SIGN_IN = 100;
+    private static final int RC_SIGN_IN = 100; // Can be any integer unique to the Activity.
 
-    private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
-    private boolean showOneTapUI = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,12 +174,13 @@ public class Login extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+            progressBarLog.setVisibility(View.GONE);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                progressBarLog.setVisibility(View.VISIBLE);
                 fireBaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 //Google Sign in Failed
@@ -205,6 +200,7 @@ public class Login extends AppCompatActivity {
                             assert user != null;
                             String userId = user.getUid();
                             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Login.this);
+                            assert account != null;
                             String name = account.getDisplayName();
                             String email = account.getEmail();
                             databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
@@ -219,7 +215,6 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
-                                        progressBarLog.setVisibility(View.GONE);
                                         startActivity(new Intent(Login.this,MainActivity.class));
                                         finish();
                                         progressBarLog.setVisibility(View.GONE);
