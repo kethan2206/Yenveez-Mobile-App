@@ -22,16 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     //onClick Logout Button
     public void Logout(View view){
-        progressBarMain.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mAuth.signOut();
-                Toast.makeText(MainActivity.this, "logged out Successfully", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, Login.class));
-                finish();
-            }
-        },1000);
+        LoggedOut();
     }
 
     FirebaseAuth mAuth;
@@ -43,5 +34,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         progressBarMain = findViewById(R.id.progressBarMain);
+    }
+
+    private void LoggedOut(){
+        progressBarMain.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mAuth.signOut();
+                Toast.makeText(MainActivity.this, "logged out Successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, Login.class));
+                finish();
+            }
+        },1000);
     }
 }

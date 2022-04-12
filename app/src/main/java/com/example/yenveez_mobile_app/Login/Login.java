@@ -145,6 +145,7 @@ public class Login extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBarLog.setVisibility(View.VISIBLE);
                 SignIn();
             }
         });
@@ -188,7 +189,7 @@ public class Login extends AppCompatActivity {
                 fireBaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 //Google Sign in Failed
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Log in failed!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -218,8 +219,10 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
+                                        progressBarLog.setVisibility(View.GONE);
                                         startActivity(new Intent(Login.this,MainActivity.class));
                                         finish();
+                                        progressBarLog.setVisibility(View.GONE);
                                         Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 }
