@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     //onClick Logout Button
     public void Logout(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        //Alert dialogue box on pressing log out button
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Do you want to Log out?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    //onClick Edit Profile pic button
     public void EditProfilePic(View view){
         launcher.launch("image/*");
     }
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(MainActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                         progressBarMain.setVisibility(View.GONE);
+
                         //Copying the image link from firebase storage to real time database
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
@@ -164,4 +167,5 @@ public class MainActivity extends AppCompatActivity {
             }
         },1000);
     }
+
 }
