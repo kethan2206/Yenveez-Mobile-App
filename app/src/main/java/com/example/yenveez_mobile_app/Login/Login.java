@@ -81,6 +81,7 @@ public class Login extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(Login.this, Reset_Password.class));
                 progressBarLog.setVisibility(View.GONE);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         },1000);
     }
@@ -94,6 +95,7 @@ public class Login extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(Login.this, Registration.class));
                 progressBarLog.setVisibility(View.GONE);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
         },1000);
@@ -159,6 +161,7 @@ public class Login extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK); //Used to kill the login activity once it go to the MainActivity
                     startActivity(intent);
                     Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 } else {
                     Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -218,6 +221,7 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
                                         startActivity(new Intent(Login.this,MainActivity.class));
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
                                         progressBarLog.setVisibility(View.GONE);
                                         Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();

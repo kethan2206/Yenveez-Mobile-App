@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 Toast.makeText(MainActivity.this, "logged out Successfully", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, Login.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
         },1000);

@@ -34,6 +34,7 @@ public class Splash_Screen extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser(); //checking if user is already exist or not
                 if (user == null){
                     startActivity(new Intent(Splash_Screen.this, Login.class));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 } else {
                     startActivity(new Intent(Splash_Screen.this, MainActivity.class));
                 }

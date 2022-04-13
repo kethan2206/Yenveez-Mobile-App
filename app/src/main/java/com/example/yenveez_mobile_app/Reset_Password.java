@@ -50,6 +50,7 @@ public class Reset_Password extends AppCompatActivity {
                             if (task.isSuccessful()){
                                 Toast.makeText(Reset_Password.this, "Reset link has been successfully sent", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Reset_Password.this, Login.class));
+                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                 finish();
                             } else {
                                 Toast.makeText(Reset_Password.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

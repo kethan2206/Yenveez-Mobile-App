@@ -85,6 +85,7 @@ public class Registration extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(Registration.this,Login.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }
         },1000);
@@ -138,6 +139,7 @@ public class Registration extends AppCompatActivity {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 Toast.makeText(Registration.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                             } else {
                                 Toast.makeText(Registration.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
