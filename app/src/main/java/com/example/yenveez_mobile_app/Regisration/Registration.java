@@ -96,6 +96,8 @@ public class Registration extends AppCompatActivity {
     FirebaseAuth mAuth; //Creating reference for Firebase Authentication
     DatabaseReference databaseReference; //Creating reference for Database
 
+    int RedeemCoin = 0; //Veez coin
+
     @SuppressLint("CutPasteId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,7 @@ public class Registration extends AppCompatActivity {
                     hashMap.put("userEmail",email);
                     hashMap.put("userPhone",phone);
                     hashMap.put("imageUrl","default");
+                    hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
 
                     //setting the value of database as the hashMap to get all the data stored in the Hashmap
                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -16,4 +16,5 @@
     <color name="button_background">#28ed8b</color>
     <color name="darker_button_background">#1adb61</color>
     <color name="border">#45ffbe</color>
+    <color name="transparent">#0000ffff </color>
 </resources>

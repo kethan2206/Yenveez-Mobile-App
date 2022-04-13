@@ -3,6 +3,7 @@ package com.example.yenveez_mobile_app.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -113,6 +114,8 @@ public class Login extends AppCompatActivity {
 
     DatabaseReference databaseReference;
 
+    int RedeemCoin = 0; //Veez coin
+
     private static final int RC_SIGN_IN = 100; // Can be any integer unique to the Activity.
 
 
@@ -170,6 +173,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    //Sign In method for Google
     private void SignIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -193,6 +197,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    //Initialising fireBaseAuthWithGoogle(account);
     private void fireBaseAuthWithGoogle(GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
         mAuth.signInWithCredential(credential)
@@ -216,6 +221,7 @@ public class Login extends AppCompatActivity {
                             hashMap.put("userEmail",email);
                             hashMap.put("userPhone","null");
                             hashMap.put("imageUrl",googleProfileImage.toString());
+                            hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                             databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

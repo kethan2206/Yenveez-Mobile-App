@@ -5,8 +5,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,7 +40,24 @@ public class MainActivity extends AppCompatActivity {
 
     //onClick Logout Button
     public void Logout(View view){
-        LoggedOut();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Do you want to Log out?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        LoggedOut();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public void EditProfilePic(View view){
@@ -55,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView profile_image;
     TextView profile_name;
 
-    ActivityResultLauncher<String> launcher;
+    ActivityResultLauncher<String> launcher; //launcher is used to open gallery
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         profile_name = findViewById(R.id.profile_name);
 
 
+        //function for opening gallery on clicking edit button
         launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
@@ -80,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String userId = mAuth.getCurrentUser().getUid();
 
-                final StorageReference storageReference = storage.getReference()
+                final StorageReference storageReference = storage.getReference() //Storing the image in the firebase storage
                         .child("ProfilePic").child(userId);
 
                 storageReference.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -88,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(MainActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
                         progressBarMain.setVisibility(View.GONE);
+                        //Copying the image link from firebase storage to real time database
                         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
@@ -100,9 +121,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         progressProfilePic.setVisibility(View.VISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        //fetching user data to the profile page from database
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //logout method
     private void LoggedOut(){
         progressBarMain.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
