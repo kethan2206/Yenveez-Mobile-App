@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -203,6 +204,7 @@ public class Login extends AppCompatActivity {
                             assert account != null;
                             String name = account.getDisplayName();
                             String email = account.getEmail();
+                            Uri googleProfileImage = account.getPhotoUrl();
                             databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
                                     .child(userId);
                             HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
@@ -210,7 +212,7 @@ public class Login extends AppCompatActivity {
                             hashMap.put("userName",name);
                             hashMap.put("userEmail",email);
                             hashMap.put("userPhone","null");
-                            hashMap.put("imageUrl","default");
+                            hashMap.put("imageUrl",googleProfileImage.toString());
                             databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
