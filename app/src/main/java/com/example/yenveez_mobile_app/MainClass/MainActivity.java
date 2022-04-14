@@ -7,12 +7,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,8 +40,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kkmcn.kbeaconlib2.KBeaconsMgr;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int PERMISSION_COARSE_LOCATION = 10;
+    private static final int PERMISSION_FINE_LOCATION = 20;
+    private static final String TAG = "Beacon";
 
     //onClick Logout Button
     public void Logout(View view){
@@ -76,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView profile_image;
     TextView profile_name;
 
+    KBeaconsMgr mBeaconsMgr; //KBeaconsMgr instance
+
     ActivityResultLauncher<String> launcher; //launcher is used to open gallery
 
     @Override
@@ -92,6 +104,53 @@ public class MainActivity extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         profile_name = findViewById(R.id.profile_name);
 
+
+        //Beacon Functions on start Main Activity!!
+
+        //Scanning Beacon in background
+        mBeaconsMgr = KBeaconsMgr.sharedBeaconManager(this);
+        if (mBeaconsMgr == null)
+        {
+            Toast.makeText(this, "Device does not have bluetooth support!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //Scanning requires permission
+        //for android6, the app need corse location permission for BLE scanning
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_COARSE_LOCATION);
+        }
+        //for android10, the app need fine location permission for BLE scanning
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
+        }
+
+
+        //Start Scanning method!!
+        KBeaconsMgr.KBeaconMgrDelegate beaconMgrDeletate = null;
+        mBeaconsMgr.delegate = beaconMgrDeletate;
+        int nStartScan = mBeaconsMgr.startScanning();
+        if (nStartScan == 0)
+        {
+            Log.v(TAG, "start scan success");
+        }
+        else if (nStartScan == KBeaconsMgr.SCAN_ERROR_BLE_NOT_ENABLE) {
+            Toast.makeText(this, "Bluetooth is not enabled", Toast.LENGTH_SHORT).show();
+        }
+        else if (nStartScan == KBeaconsMgr.SCAN_ERROR_NO_PERMISSION) {
+            Toast.makeText(this, "Bluetooth scanning has no location permission", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Bluetooth scanning error!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        //Other Functions!!
 
         //function for opening gallery on clicking edit button
         launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -167,5 +226,4 @@ public class MainActivity extends AppCompatActivity {
             }
         },1000);
     }
-
 }

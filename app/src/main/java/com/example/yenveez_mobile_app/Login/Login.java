@@ -3,13 +3,13 @@ package com.example.yenveez_mobile_app.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,6 +25,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,13 +103,28 @@ public class Login extends AppCompatActivity {
         },1000);
     }
 
+    //Google Button SignIn functions
+    public void GoogleButton(View view){
+        progressBarLog.setVisibility(View.VISIBLE);
+        SignInGoogle();
+    }
+
+    //facebook Button SignIn functions
+    public void facebookButton(View view){
+
+    }
+
+    //Instagram Button SignIn functions
+    public void InstaButton(View view){
+
+    }
+
     //onClick google Sign in Button
 
     EditText editText_EmailLog, editText_PasswordLog;
     ProgressBar progressBarLog;
 
     FirebaseAuth mAuth; //Creating reference for Firebase Authentication
-    SignInButton signInButton;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -130,8 +146,6 @@ public class Login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
 
-        signInButton = findViewById(R.id.signInbutton);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
 
         //Configure Google Sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -140,15 +154,6 @@ public class Login extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        signInButton = findViewById(R.id.signInbutton);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressBarLog.setVisibility(View.VISIBLE);
-                SignIn();
-            }
-        });
 
     }
 
@@ -174,7 +179,7 @@ public class Login extends AppCompatActivity {
     }
 
     //Sign In method for Google
-    private void SignIn(){
+    private void SignInGoogle(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
