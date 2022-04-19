@@ -41,9 +41,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.297" />
 
     <EditText
         android:id="@+id/editText_PasswordLog"
@@ -115,7 +116,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInbutton_facebook"
+        app:layout_constraintTop_toBottomOf="@+id/signInButton_facebook"
         app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
@@ -148,7 +149,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/signInbutton_facebook"
+        android:id="@+id/signInButton_facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -170,7 +171,7 @@
         android:background="@drawable/icon_button_background"
         android:onClick="GoogleButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signInbutton_facebook"
+        app:layout_constraintEnd_toStartOf="@+id/signInButton_facebook"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -178,19 +179,19 @@
         app:srcCompat="@drawable/google_icon" />
 
     <ImageButton
-        android:id="@+id/imageView7"
+        android:id="@+id/signInbutton_twitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/icon_button_background"
-        android:onClick="InstaButton"
+        android:onClick="TwitterButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/signInbutton_facebook"
+        app:layout_constraintStart_toEndOf="@+id/signInButton_facebook"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/insta_icon" />
+        app:srcCompat="@drawable/twitter_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

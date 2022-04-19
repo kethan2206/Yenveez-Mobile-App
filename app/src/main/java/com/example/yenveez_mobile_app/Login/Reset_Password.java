@@ -1,4 +1,4 @@
-package com.example.yenveez_mobile_app;
+package com.example.yenveez_mobile_app.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.yenveez_mobile_app.Login.Login;
-import com.example.yenveez_mobile_app.Regisration.Registration;
+import com.example.yenveez_mobile_app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

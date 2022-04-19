@@ -40,7 +40,19 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAccSensorValue;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketBase;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyTLM;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyUID;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyURL;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketIBeacon;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSensor;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSystem;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
+import com.kkmcn.kbeaconlib2.KBeacon;
 import com.kkmcn.kbeaconlib2.KBeaconsMgr;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Alert dialogue box on pressing log out button
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want to Log out?")
+        builder.setMessage("If you have logged in with Google or Facebook or Twitter then your all saved data will be deleted.\n\nDo you want to log out?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -136,13 +148,13 @@ public class MainActivity extends AppCompatActivity {
         int nStartScan = mBeaconsMgr.startScanning();
         if (nStartScan == 0)
         {
-            Log.v(TAG, "start scan success");
+            Toast.makeText(this, "Scanning for nearby Beacon...", Toast.LENGTH_LONG).show();
         }
         else if (nStartScan == KBeaconsMgr.SCAN_ERROR_BLE_NOT_ENABLE) {
-            Toast.makeText(this, "Bluetooth is not enabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bluetooth is turned off", Toast.LENGTH_LONG).show();
         }
         else if (nStartScan == KBeaconsMgr.SCAN_ERROR_NO_PERMISSION) {
-            Toast.makeText(this, "Bluetooth scanning has no location permission", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bluetooth scanning has no location permission", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -210,6 +222,13 @@ public class MainActivity extends AppCompatActivity {
                 //Exception error
             }
         });
+
+
+    }
+
+    //Implementation KBeaconMgr delegate to get scanning result
+    private void ScannedPacket(){
+        //example for print all scanned packet
     }
 
     //logout method
