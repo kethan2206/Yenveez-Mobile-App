@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.yenveez_mobile_app.FindBeacon;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -49,6 +50,9 @@ import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketIBeacon;
 import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSensor;
 import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSystem;
 import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
+import com.kkmcn.kbeaconlib2.KBConnPara;
+import com.kkmcn.kbeaconlib2.KBConnState;
+import com.kkmcn.kbeaconlib2.KBConnectionEvent;
 import com.kkmcn.kbeaconlib2.KBeacon;
 import com.kkmcn.kbeaconlib2.KBeaconsMgr;
 
@@ -56,8 +60,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PERMISSION_COARSE_LOCATION = 10;
-    private static final int PERMISSION_FINE_LOCATION = 20;
     private static final String TAG = "Beacon";
 
     //onClick Logout Button
@@ -83,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public void FindBeacon(View view){
+        startActivity(new Intent(MainActivity.this, FindBeacon.class));
+        finish();
+    }
+
     //onClick Edit Profile pic button
     public void EditProfilePic(View view){
         launcher.launch("image/*");
@@ -97,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
     TextView profile_name;
-
-    KBeaconsMgr mBeaconsMgr; //KBeaconsMgr instance
 
     ActivityResultLauncher<String> launcher; //launcher is used to open gallery
 
@@ -115,52 +120,6 @@ public class MainActivity extends AppCompatActivity {
 
         profile_image = findViewById(R.id.profile_image);
         profile_name = findViewById(R.id.profile_name);
-
-
-        //Beacon Functions on start Main Activity!!
-
-        //Scanning Beacon in background
-        mBeaconsMgr = KBeaconsMgr.sharedBeaconManager(this);
-        if (mBeaconsMgr == null)
-        {
-            Toast.makeText(this, "Device does not have bluetooth support!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        //Scanning requires permission
-        //for android6, the app need corse location permission for BLE scanning
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_COARSE_LOCATION);
-        }
-        //for android10, the app need fine location permission for BLE scanning
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_FINE_LOCATION);
-        }
-
-
-        //Start Scanning method!!
-        KBeaconsMgr.KBeaconMgrDelegate beaconMgrDeletate = null;
-        mBeaconsMgr.delegate = beaconMgrDeletate;
-        int nStartScan = mBeaconsMgr.startScanning();
-        if (nStartScan == 0)
-        {
-            Toast.makeText(this, "Scanning for nearby Beacon...", Toast.LENGTH_LONG).show();
-        }
-        else if (nStartScan == KBeaconsMgr.SCAN_ERROR_BLE_NOT_ENABLE) {
-            Toast.makeText(this, "Bluetooth is turned off", Toast.LENGTH_LONG).show();
-        }
-        else if (nStartScan == KBeaconsMgr.SCAN_ERROR_NO_PERMISSION) {
-            Toast.makeText(this, "Bluetooth scanning has no location permission", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(this, "Bluetooth scanning error!", Toast.LENGTH_SHORT).show();
-        }
-
 
         //Other Functions!!
 
@@ -224,11 +183,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
-
-    //Implementation KBeaconMgr delegate to get scanning result
-    private void ScannedPacket(){
-        //example for print all scanned packet
     }
 
     //logout method

@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -161,6 +163,7 @@ public class Login extends AppCompatActivity {
 
         editText_EmailLog = findViewById(R.id.editText_EmailLog);
         editText_PasswordLog = findViewById(R.id.editText_PasswordLog);
+
         progressBarLog = findViewById(R.id.progressBarLog);
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
