@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -135,8 +137,6 @@ public class Login extends AppCompatActivity {
         SignInTwitter();
     }
 
-    //onClick google Sign in Button
-
     EditText editText_EmailLog, editText_PasswordLog;
     ProgressBar progressBarLog;
 
@@ -153,6 +153,9 @@ public class Login extends AppCompatActivity {
 
     FirebaseStorage firebaseStorage;
 
+    ImageView hide_show_password;
+
+
     private static final int RC_SIGN_IN = 100; // Can be any integer unique to the Activity.
 
 
@@ -160,6 +163,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         editText_EmailLog = findViewById(R.id.editText_EmailLog);
         editText_PasswordLog = findViewById(R.id.editText_PasswordLog);
