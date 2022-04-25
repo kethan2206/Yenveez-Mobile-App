@@ -104,11 +104,11 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        editText_name = findViewById(R.id.editText_name);
-        editText_EmailReg = findViewById(R.id.editText_EmailReg);
-        editText_passReg = findViewById(R.id.editText_passReg);
-        editText_Phone = findViewById(R.id.editText_Phone);
-        progressBarReg = findViewById(R.id.progressBarReg);
+        editText_name = (EditText) findViewById(R.id.editText_name);
+        editText_EmailReg = (EditText) findViewById(R.id.editText_EmailReg);
+        editText_passReg = (EditText) findViewById(R.id.editText_passReg);
+        editText_Phone = (EditText) findViewById(R.id.editText_Phone);
+        progressBarReg = (ProgressBar) findViewById(R.id.progressBarReg);
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
     }

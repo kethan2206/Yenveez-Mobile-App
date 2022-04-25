@@ -70,8 +70,8 @@ public class Reset_Password extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
-        editText_EmailReset = findViewById(R.id.editText_EmailReset);
-        progressBarReset = findViewById(R.id.progressBarReset);
+        editText_EmailReset = (EditText) findViewById(R.id.editText_EmailReset);
+        progressBarReset = (ProgressBar) findViewById(R.id.progressBarReset);
         mAuth = FirebaseAuth.getInstance();
     }
 }

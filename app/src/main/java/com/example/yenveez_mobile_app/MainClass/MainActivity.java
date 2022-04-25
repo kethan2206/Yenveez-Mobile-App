@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -112,14 +113,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        progressBarMain = findViewById(R.id.progressBarMain);
-        progressProfilePic = findViewById(R.id.progressProfilePic);
+        progressBarMain = (ProgressBar) findViewById(R.id.progressBarMain);
+        progressProfilePic = (ProgressBar) findViewById(R.id.progressProfilePic);
 
         firebaseUser = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
 
-        profile_image = findViewById(R.id.profile_image);
-        profile_name = findViewById(R.id.profile_name);
+        profile_image = (ImageView) findViewById(R.id.profile_image);
+        profile_name = (TextView) findViewById(R.id.profile_name);
 
         //Other Functions!!
 

@@ -84,10 +84,9 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
-        profile_image_small = findViewById(R.id.profile_image_small);
-        progressBarBeacon = findViewById(R.id.progressBarBeacon);
-
-        stepsCount = findViewById(R.id.stepsCount);
+        profile_image_small = (ImageView) findViewById(R.id.profile_image_small);
+        progressBarBeacon = (ProgressBar) findViewById(R.id.progressBarBeacon);
+        stepsCount = (TextView) findViewById(R.id.stepsCount);
 
         //setting the Profile icon
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
@@ -143,11 +142,10 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
         //Defining references
         beaconScanStatusText = findViewById(R.id.BeaconScanStatusText);
-        //listViewBeacon = findViewById(R.id.ListViewBeacon);
     }
 
 
-    //override method for beacon
+    //override methods for KBeaconsMgr.KBeaconMgrDelegate interface
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
 
@@ -164,7 +162,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     }
 
 
-    //Override method for sensor
+    //Override method for SensorEventListener interface
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {

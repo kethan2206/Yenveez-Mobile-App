@@ -165,10 +165,9 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        editText_EmailLog = findViewById(R.id.editText_EmailLog);
-        editText_PasswordLog = findViewById(R.id.editText_PasswordLog);
-
-        progressBarLog = findViewById(R.id.progressBarLog);
+        editText_EmailLog = (EditText) findViewById(R.id.editText_EmailLog);
+        editText_PasswordLog = (EditText) findViewById(R.id.editText_PasswordLog);
+        progressBarLog = (ProgressBar) findViewById(R.id.progressBarLog);
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
 
