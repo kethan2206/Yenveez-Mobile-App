@@ -5,6 +5,7 @@
     <string name="facebook_app_id">1234</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">56789</string>
+    <string name="location_permit_needed_for_ble">The bluetooth need location permission during scan</string>
 
 
 </resources>

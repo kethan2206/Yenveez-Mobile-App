@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -14,7 +15,9 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.yenveez_mobile_app.FindBeacon;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.R;
+import com.example.yenveez_mobile_app.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,6 +66,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Beacon";
+    private static final int PERMISSION_COARSE_LOCATION = 0;
+    private static final int PERMISSION_FINE_LOCATION = 1;
 
     //onClick Logout Button
     public void Logout(View view){
@@ -108,10 +114,20 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityResultLauncher<String> launcher; //launcher is used to open gallery
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Checking location permission allowed or not
+        if (!checkBluetoothPermitAllowed())
+        {
+            Toast.makeText(this, "Bluetooth scanning need location permission", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         mAuth = FirebaseAuth.getInstance();
         progressBarMain = (ProgressBar) findViewById(R.id.progressBarMain);
         progressProfilePic = (ProgressBar) findViewById(R.id.progressProfilePic);
@@ -184,6 +200,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    //Checking if all permissions are allowed or not
+    public boolean checkBluetoothPermitAllowed(){
+        if (!Utils.isLocationBluePermission(this)){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    23);
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
+            }
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
+            }
+
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     //logout method
