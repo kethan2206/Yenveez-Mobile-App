@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
@@ -23,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yenveez_Mobile_App">
         <activity
-            android:name=".FindBeacon"
+            android:name=".Beacon.FindBeacon"
             android:exported="false" />
         <activity
             android:name=".Login.Reset_Password"

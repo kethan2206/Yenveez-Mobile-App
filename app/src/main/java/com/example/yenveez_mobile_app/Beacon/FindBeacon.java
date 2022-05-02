@@ -1,13 +1,14 @@
-package com.example.yenveez_mobile_app;
+package com.example.yenveez_mobile_app.Beacon;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,17 +24,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.MainClass.UserData;
-import com.example.yenveez_mobile_app.Splash.Splash_Screen;
+import com.example.yenveez_mobile_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,6 +46,7 @@ import com.kkmcn.kbeaconlib2.KBeaconsMgr;
 public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeaconMgrDelegate, SensorEventListener {
 
     private static final String TAG = "Beacon";
+    public static final  int REQUEST_ENABLE_BT = 1;
     TextView beaconScanStatusText,stepsCount;
     ImageView profile_image_small;
     FirebaseUser firebaseUser;
@@ -55,14 +54,22 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     ProgressBar progressBarBeacon,progressBarBeaconScan;
     DatabaseReference databaseReference;
 
+    Button start,stop;
+
+    BluetoothManager bluetoothManager;
+    BluetoothAdapter bluetoothAdapter;
 
     SensorManager sensorManager; //Used for accessing acceleration sensor
     Sensor mSensor;
     boolean isCounterSensorPresent;
+    public static float mStepCounterAndroid = 0;
+    public static float mInitialStepCount = 0;
 
     private KBeaconsMgr mBeaconsMgr;
+    private KBeacon mBeacon;
     private int mScanFailedContinueNum = 0;
     private final static int  MAX_ERROR_SCAN_NUMBER = 2;
+    int beaconRssi;
 
     //onClick profile
     public void ProfilePage(View view){
@@ -77,6 +84,22 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         },900);
     }
 
+    public void Start(View view){
+        start.setVisibility(View.GONE);
+        stop.setVisibility(View.VISIBLE);
+        sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void Stop(View view){
+        stop.setVisibility(View.GONE);
+        start.setVisibility(View.VISIBLE);
+        sensorManager.unregisterListener(this,mSensor);
+        mStepCounterAndroid = 0;
+        mInitialStepCount = 0;
+        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,11 +110,25 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
 
+        bluetoothManager = getSystemService(BluetoothManager.class);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+
+
+        start = (Button) findViewById(R.id.start);
+        stop = (Button) findViewById(R.id.stop);
+
         profile_image_small = (ImageView) findViewById(R.id.profile_image_small);
         progressBarBeacon = (ProgressBar) findViewById(R.id.progressBarBeacon);
         progressBarBeaconScan = (ProgressBar) findViewById(R.id.progressBarBeaconScan);
         stepsCount = (TextView) findViewById(R.id.stepsCount);
         beaconScanStatusText = (TextView) findViewById(R.id.BeaconScanStatusText);
+
+        //Enabling the bluetooth if it is not enable
+        if (!bluetoothAdapter.isEnabled()){
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
 
         //Accessing permission for Physical Sensor of the device
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED){
@@ -133,7 +170,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
             isCounterSensorPresent = true;
         } else {
-            Toast.makeText(this, "Device does not support any counter Sensor", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Device does not support any Accelerometer Sensor", Toast.LENGTH_SHORT).show();
             isCounterSensorPresent = false;
         }
 
@@ -151,7 +188,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mBeaconsMgr.setScanMode(KBeaconsMgr.SCAN_MODE_LOW_LATENCY);
         mBeaconsMgr.setScanAdvTypeFilter(KBAdvType.EddyTLM | KBAdvType.Sensor | KBAdvType.IBeacon);
 
-        //starting scanning the beacon
+        //start scanning the beacon
         ScanBeacon();
 
     }
@@ -177,38 +214,47 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
 
     //override methods for KBeaconsMgr.KBeaconMgrDelegate interface
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
         beaconScanStatusText.setText("Beacon found");
         progressBarBeaconScan.setVisibility(View.GONE);
+        for (KBeacon beacon: beacons) {
+            //get beacon adv common info
+            Log.v(TAG, "beacon mac:" + beacon.getMac());
+            Log.v(TAG, "beacon name:" + beacon.getName());
+            Log.v(TAG, "beacon rssi:" + beacon.getRssi());
+            beaconRssi = beacon.getRssi();
+            //Toast.makeText(this, String.valueOf(beaconRssi), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onCentralBleStateChang(int nNewState) {
         Log.e(TAG, "centralBleStateChang：" + nNewState);
-        beaconScanStatusText.setText(String.valueOf(nNewState));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onScanFailed(int errorCode) {
         Log.e(TAG, "Start N scan failed：" + errorCode);
         if (mScanFailedContinueNum >= MAX_ERROR_SCAN_NUMBER){
-            Toast.makeText(this, "scan encount error, error time:" + mScanFailedContinueNum, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "scan encounter error, error time:" + mScanFailedContinueNum, Toast.LENGTH_SHORT).show();
         }
         mScanFailedContinueNum++;
+        beaconScanStatusText.setText("Scan failed");
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mBeaconsMgr.stopScanning();
-    }
 
-    //Override method for SensorEventListener interface
-
+    //override methods for SensorEven Listener
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        stepsCount.setText(String.valueOf(sensorEvent.values[0]));
+        if (mInitialStepCount == 0.0){
+            mInitialStepCount = sensorEvent.values[0];
+        }
+        mStepCounterAndroid = sensorEvent.values[0];
+
+        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
     }
 
     @Override
@@ -216,20 +262,16 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     }
 
+
+    //other
     @Override
     protected void onResume() {
         super.onResume();
-        if (isCounterSensorPresent){
-            sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL);
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (isCounterSensorPresent){
-            sensorManager.unregisterListener(this);
-        }
     }
 
     @Override
@@ -237,6 +279,5 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         super.onDestroy();
         sensorManager = null;
         mSensor = null;
-        mBeaconsMgr.clearBeacons();
     }
 }

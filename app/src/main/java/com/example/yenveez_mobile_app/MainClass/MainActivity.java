@@ -2,39 +2,31 @@ package com.example.yenveez_mobile_app.MainClass;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.Sensor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.yenveez_mobile_app.FindBeacon;
+import com.example.yenveez_mobile_app.Beacon.FindBeacon;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.R;
-import com.example.yenveez_mobile_app.Utils;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.yenveez_mobile_app.Beacon.Utils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,22 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAccSensorValue;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketBase;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyTLM;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyUID;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketEddyURL;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketIBeacon;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSensor;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketSystem;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
-import com.kkmcn.kbeaconlib2.KBConnPara;
-import com.kkmcn.kbeaconlib2.KBConnState;
-import com.kkmcn.kbeaconlib2.KBConnectionEvent;
-import com.kkmcn.kbeaconlib2.KBeacon;
-import com.kkmcn.kbeaconlib2.KBeaconsMgr;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
