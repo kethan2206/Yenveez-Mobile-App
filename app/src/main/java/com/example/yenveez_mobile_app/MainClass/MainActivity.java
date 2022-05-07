@@ -1,5 +1,7 @@
 package com.example.yenveez_mobile_app.MainClass;
 
+/** Home Screen */
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -17,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +48,20 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_COARSE_LOCATION = 0;
     private static final int PERMISSION_FINE_LOCATION = 1;
 
-    //onClick Logout Button
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    FirebaseStorage storage;
+    FirebaseDatabase firebaseDatabase;
+
+    ProgressBar progressBarMain, progressProfilePic;
+    ImageView profile_image;
+    TextView profile_name;
+
+    ActivityResultLauncher<String> launcher; //launcher is used to open gallery
+
+    /** onClick Logout Button */
+
     public void Logout(View view){
 
         //Alert dialogue box on pressing log out button
@@ -73,22 +89,11 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    //onClick Edit Profile pic button
+    /** onClick Edit Profile pic button */
+
     public void EditProfilePic(View view){
         launcher.launch("image/*");
     }
-
-    FirebaseAuth mAuth;
-    FirebaseUser firebaseUser;
-    DatabaseReference databaseReference;
-    FirebaseStorage storage;
-    FirebaseDatabase firebaseDatabase;
-
-    ProgressBar progressBarMain, progressProfilePic;
-    ImageView profile_image;
-    TextView profile_name;
-
-    ActivityResultLauncher<String> launcher; //launcher is used to open gallery
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Checking location permission allowed or not
+        /** Checking location permission allowed or not */
         if (!checkBluetoothPermitAllowed())
         {
             Toast.makeText(this, "Bluetooth scanning need location permission", Toast.LENGTH_SHORT).show();
@@ -116,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Other Functions!!
 
-        //function for opening gallery on clicking edit button
+        /** function for opening gallery on clicking edit button */
+
         launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
@@ -150,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
         progressProfilePic.setVisibility(View.VISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
-        //fetching user data to the profile page from database
+        /** fetching user data to the profile page from database */
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -178,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Checking if all permissions are allowed or not
+    /** Checking if all permissions are allowed or not*/
+
     public boolean checkBluetoothPermitAllowed(){
         if (!Utils.isLocationBluePermission(this)){
             ActivityCompat.requestPermissions(this,
@@ -202,7 +210,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //logout method
+    /** logout method */
+
     private void LoggedOut(){
         progressBarMain.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {

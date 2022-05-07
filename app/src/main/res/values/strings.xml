@@ -2,7 +2,7 @@
     <string name="app_name">Yenveez</string>
     <string name="default_web_client" translatable="false">277099104794-d0rmv005dom4e77lag4ofs0timi95033.apps.googleusercontent.com</string>
 
-    <string name="facebook_app_id">1234</string>
+    <string name="facebook_app_id">1284044478671771</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">56789</string>
     <string name="location_permit_needed_for_ble">The bluetooth need location permission during scan</string>

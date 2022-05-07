@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -27,14 +28,16 @@ import java.util.HashMap;
 
 public class Registration extends AppCompatActivity {
 
-    //onClick Register Button
+    /** onClick Register Button */
+
     public void Register(View view){
         String name = editText_name.getText().toString();
         String email = editText_EmailReg.getText().toString();
         String password = editText_passReg.getText().toString();
         String phone = editText_Phone.getText().toString();
 
-        //String expression for verifying the pattern of an email
+        /** String expression for verifying the pattern of an email */
+
         String Expn =
                 "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                         +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -43,7 +46,8 @@ public class Registration extends AppCompatActivity {
                         +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                         +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
-        //Checking all conditions for all required field
+        /** Checking all conditions for all required field */
+
         if(name.isEmpty()){
             editText_name.setError("Please provide a Name");
             editText_name.requestFocus();
@@ -77,7 +81,8 @@ public class Registration extends AppCompatActivity {
         }
     }
 
-    //onClick 'Already registered' button
+    /** onClick 'Already registered' button */
+
     public void ClickToLogin(View view){
         progressBarReg.setVisibility(View.VISIBLE);
         //Handler is used for making a delay of 1 sec
@@ -113,7 +118,8 @@ public class Registration extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
     }
 
-    //Function for creating new User
+    /** Function for creating new User */
+
     private void CreateUser(String name, String email, String password, String phone){
         progressBarReg.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -133,7 +139,7 @@ public class Registration extends AppCompatActivity {
                     hashMap.put("imageUrl","default");
                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
 
-                    //setting the value of database as the hashMap to get all the data stored in the Hashmap
+                    /** setting the value of database as the hashMap to get all the data stored in the Hashmap */
                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

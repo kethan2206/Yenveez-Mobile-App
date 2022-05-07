@@ -1,5 +1,7 @@
 package com.example.yenveez_mobile_app.Splash;
 
+/** Splash Screen */
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -27,7 +29,8 @@ public class Splash_Screen extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Handler is used for making a delay of 0.8 sec for displaying the splash screen
+        /** Handler is used for making a delay of 0.8 sec for displaying the splash screen */
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

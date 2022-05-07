@@ -55,12 +55,14 @@ import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
 
-    //onClick Login Button
+    /** onClick Login Button */
+
     public void login(View view){
         String Email = editText_EmailLog.getText().toString();
         String Password = editText_PasswordLog.getText().toString();
 
-        //String expression for verifying the pattern of an email
+        /** String expression for verifying the pattern of an email */
+
         String Expn =
                 "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
                         +"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
@@ -69,7 +71,8 @@ public class Login extends AppCompatActivity {
                         +"[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
                         +"([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$";
 
-        //Checking all conditions for email and password
+        /** Checking all conditions for email and password */
+
         if (Email.isEmpty()) {
             editText_EmailLog.setError("Please provide an Email");
             editText_EmailLog.requestFocus();
@@ -91,7 +94,8 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    //onClick Forgot password button
+    /** onClick Forgot password button */
+
     public void ForgotPass(View view){
         progressBarLog.setVisibility(View.VISIBLE);
         //Handler is used for making a delay of 1 sec once user click on Forgot Password button
@@ -105,7 +109,8 @@ public class Login extends AppCompatActivity {
         },1000);
     }
 
-    //onClick Register button
+    /** onClick Register button */
+
     public void CreateAcc(View view){
         progressBarLog.setVisibility(View.VISIBLE);
         //Handler is used for making a delay of 1 sec
@@ -120,18 +125,21 @@ public class Login extends AppCompatActivity {
         },1000);
     }
 
-    //Google Button SignIn functions
+    /** Google Button SignIn functions */
+
     public void GoogleButton(View view){
         progressBarLog.setVisibility(View.VISIBLE);
         SignInGoogle();
     }
 
-    //facebook Button SignIn functions
+    /** facebook Button SignIn functions */
+
     public void facebookButton(View view){
         LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("public_profile"));
     }
 
-    //Twitter Button SignIn functions
+    /** Twitter Button SignIn functions */
+
     public void TwitterButton(View view){
         progressBarLog.setVisibility(View.VISIBLE);
         SignInTwitter();
@@ -172,7 +180,8 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
 
 
-        //Configure Google Sign in
+        /** Configure Google Sign in */
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client))
                 .requestEmail()
@@ -181,27 +190,27 @@ public class Login extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //Facebook login config
-//        callbackManager = CallbackManager.Factory.create();
-//        LoginManager.getInstance().registerCallback(callbackManager,
-//                new FacebookCallback<LoginResult>() {
-//                    @Override
-//                    public void onSuccess(LoginResult loginResult) {
-//                        handleFacebookAccessToken(loginResult.getAccessToken());
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        // App code
-//                    }
-//
-//                    @Override
-//                    public void onError(FacebookException exception) {
-//                        // App code
-//                    }
-//                });
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
     }
 
-    //Login function with email
+    /** Login function with email */
     private void UserLogin(String Email, String Password) {
         progressBarLog.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -222,7 +231,8 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    //Sign In method for Google
+    /** Sign In method for Google */
+
     private void SignInGoogle(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -247,7 +257,8 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    //Initialising fireBaseAuthWithGoogle(account);
+    /** Initialising fireBaseAuthWithGoogle(account) */
+
     private void fireBaseAuthWithGoogle(GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
         mAuth.signInWithCredential(credential)
@@ -292,27 +303,29 @@ public class Login extends AppCompatActivity {
     }
 
 
-    //handler method for facebook login
-//    private void handleFacebookAccessToken(AccessToken token) {
-//
-//        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            startActivity(new Intent(Login.this, MainActivity.class));
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
+    /**handler method for facebook login*/
 
-    //Twitter SignIn
+    private void handleFacebookAccessToken(AccessToken token) {
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            startActivity(new Intent(Login.this, MainActivity.class));
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    /** Twitter SignIn */
+
     private void SignInTwitter(){
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
         // Target specific email with login hint.
@@ -363,7 +376,7 @@ public class Login extends AppCompatActivity {
                                 }
                             });
         } else {
-            // There's no pending result so we need to start the sign-in flow.
+            // There's no pending result so we need to start the sign-in flow
             mAuth.startActivityForSignInWithProvider(/* activity= */ this, provider.build())
                     .addOnSuccessListener(
                             new OnSuccessListener<AuthResult>() {

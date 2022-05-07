@@ -1,5 +1,7 @@
 package com.example.yenveez_mobile_app.MainClass;
 
+/** This Class is created to return all the user data */
+
 public class UserData {
     private String userId, userName, userEmail, userPhone, imageUrl;
 
