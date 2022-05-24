@@ -202,6 +202,17 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     }
 
+    public void StartPedometer(){
+        sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL); //Starting the foot step count
+    }
+
+    public void StopPedometer(){
+        sensorManager.unregisterListener(this, mSensor);
+        mStepCounterAndroid = 0;
+        mInitialStepCount = 0;
+        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount)); //stopping the foot step counter
+    }
+
     /**Beacon Scan function*/
 
     public void ScanBeacon(){
@@ -245,19 +256,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             Log.v(TAG, "beacon rssi:" + beacon.getRssi());
             beaconRssi = beacon.getRssi();
             rssiText.setText(String.valueOf(beaconRssi));
-        }
 
-        if (mBeaconsArray.length > 1) {
-            for (int i=0; i<mBeaconsArray.length; i++) {
-                if (!mBeaconsArray[i].getMac().equals(mBeaconsArray[i+1].getMac())) {
-                    sensorManager.unregisterListener(this, mSensor);
-                    mStepCounterAndroid = 0;
-                    mInitialStepCount = 0;
-                    stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount)); //stopping the foot step counter
-                }
-            }
-        } else {
-            sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL); //Starting the foot step count
         }
     }
 
