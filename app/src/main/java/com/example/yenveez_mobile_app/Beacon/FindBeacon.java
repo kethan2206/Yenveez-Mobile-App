@@ -75,6 +75,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     private KBeacon[] mBeaconsArray;
     private HashMap<String, KBeacon> mBeaconsDirectory;
 
+    private final String BEACON_DEFAULT_MAC = "BC:57:29:00:4D:CE";
+
 
     /**onClick profile*/
 
@@ -243,20 +245,21 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         progressBarBeaconScan.setVisibility(View.GONE);
 
         for (KBeacon beacon: beacons) {
-            mBeaconsDirectory.put(beacon.getMac(), beacon);
-            if (mBeaconsDirectory.size() > 0) {
-                mBeaconsArray = new KBeacon[mBeaconsDirectory.size()];
-                mBeaconsDirectory.values().toArray(mBeaconsArray);
-            }
 
             /** get beacon adv common info*/
 
             Log.v(TAG, "beacon mac:" + beacon.getMac());
             Log.v(TAG, "beacon name:" + beacon.getName());
             Log.v(TAG, "beacon rssi:" + beacon.getRssi());
+
+            if (beacon.getMac().equals(BEACON_DEFAULT_MAC)){
+                StartPedometer();
+            } else {
+                StopPedometer();
+            }
+
             beaconRssi = beacon.getRssi();
             rssiText.setText(String.valueOf(beaconRssi));
-
         }
     }
 
