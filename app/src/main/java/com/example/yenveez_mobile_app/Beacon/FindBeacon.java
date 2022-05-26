@@ -171,7 +171,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             }
         });
 
-
         /**Getting footStep*/
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -204,19 +203,20 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     }
 
+    /** Start Pedometer function */
     public void StartPedometer(){
-        sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL); //Starting the foot step count
+        sensorManager.registerListener(this,mSensor,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    /** Stop Pedometer function */
     public void StopPedometer(){
         sensorManager.unregisterListener(this, mSensor);
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
-        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount)); //stopping the foot step counter
+        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
     }
 
     /**Beacon Scan function*/
-
     public void ScanBeacon(){
         int nStartScan = mBeaconsMgr.startScanning();
         if (nStartScan == 0)
@@ -236,8 +236,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     }
 
 
-    /**override methods for KBeaconsMgr.KBeaconMgrDelegate interface*/
-
+    /** override methods for KBeaconsMgr.KBeaconMgrDelegate interface */
     @SuppressLint("SetTextI18n")
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
@@ -282,7 +281,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
 
     /**override methods for SensorEven Listener*/
-
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (mInitialStepCount == 0.0){
@@ -300,7 +298,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
 
     /**other*/
-
     @Override
     protected void onResume() {
         super.onResume();
