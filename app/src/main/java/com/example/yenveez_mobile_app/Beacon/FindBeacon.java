@@ -39,17 +39,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketBase;
+import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketIBeacon;
 import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
 import com.kkmcn.kbeaconlib2.KBeacon;
 import com.kkmcn.kbeaconlib2.KBeaconsMgr;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeaconMgrDelegate, SensorEventListener {
 
     private static final String TAG = "Beacon";
     public static final  int REQUEST_ENABLE_BT = 1;
-    TextView beaconScanStatusText,stepsCount, rssiText;
+    TextView beaconScanStatusText,stepsCount, rssiText, energyTextView;
     ImageView profile_image_small;
     ProgressBar progressBarBeacon,progressBarBeaconScan;
     Button stop;
@@ -57,7 +61,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
 
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReferenceProfilePic, databaseReferenceUuid;
 
     BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
@@ -67,15 +71,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     boolean isCounterSensorPresent;
     public static float mStepCounterAndroid = 0;
     public static float mInitialStepCount = 0;
+    public static float energyGenerated = 0;
 
     private KBeaconsMgr mBeaconsMgr;
     private int mScanFailedContinueNum = 0;
     private final static int  MAX_ERROR_SCAN_NUMBER = 2;
     int beaconRssi;
-    private KBeacon[] mBeaconsArray;
-    private HashMap<String, KBeacon> mBeaconsDirectory;
 
-    private final String BEACON_DEFAULT_MAC = "BC:57:29:00:4D:CE";
+    public final ArrayList<String> UuidList = new ArrayList<>();
 
 
     /**onClick profile*/
@@ -88,6 +91,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 startActivity(new Intent(FindBeacon.this, MainActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 progressBarBeacon.setVisibility(View.GONE);
+                finish();
             }
         },900);
     }
@@ -100,6 +104,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
         stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
+        energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
+        energyTextView.setText(String.valueOf(energyGenerated));
     }
 
 
@@ -126,8 +132,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         stepsCount = (TextView) findViewById(R.id.stepsCount);
         beaconScanStatusText = (TextView) findViewById(R.id.BeaconScanStatusText);
         rssiText = (TextView) findViewById(R.id.rssiText);
+        energyTextView = (TextView) findViewById(R.id.energyTextView);
 
-        mBeaconsDirectory = new HashMap<>(50);
 
         /**Enabling the bluetooth if it is not enable*/
 
@@ -145,11 +151,11 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         }
 
 
-        databaseReference = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        databaseReferenceProfilePic = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         /**fetching user profile pic to the profile page from database*/
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReferenceProfilePic.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -171,8 +177,25 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             }
         });
 
-        /**Getting footStep*/
+        /** Retrieve all the UUID in a Array List */
+        databaseReferenceUuid = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Malls");
+        databaseReferenceUuid.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UuidList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    UuidList.add(dataSnapshot.getValue().toString());
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        /**Getting footStep*/
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null){
@@ -214,6 +237,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
         stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
+        energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
+        energyTextView.setText(String.valueOf(energyGenerated));
     }
 
     /**Beacon Scan function*/
@@ -251,11 +276,22 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             Log.v(TAG, "beacon name:" + beacon.getName());
             Log.v(TAG, "beacon rssi:" + beacon.getRssi());
 
-            if (beacon.getMac().equals(BEACON_DEFAULT_MAC)){
-                StartPedometer();
-            } else {
-                StopPedometer();
+            /** get ADV packet */
+            for (KBAdvPacketBase advPacketBase : beacon.allAdvPackets()){
+                switch (advPacketBase.getAdvType()){
+                    case KBAdvType.IBeacon:
+                        KBAdvPacketIBeacon advPacketIBeacon = (KBAdvPacketIBeacon) advPacketBase;
+                        String Uuid = advPacketIBeacon.getUuid();
+                        Log.v(TAG,"IBeacon UUID:" + Uuid);
+                        if (UuidList.contains(Uuid)){
+                            StartPedometer();
+                        } else {
+                            StopPedometer();
+                        }
+                }
             }
+            //Clear all scanned packet
+            beacon.removeAdvPacket();
 
             beaconRssi = beacon.getRssi();
             rssiText.setText(String.valueOf(beaconRssi));
@@ -289,6 +325,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mStepCounterAndroid = sensorEvent.values[0];
 
         stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
+        energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
+        energyTextView.setText(String.valueOf(energyGenerated));
     }
 
     @Override
@@ -311,14 +349,10 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        sensorManager = null;
-        mSensor = null;
-        mBeaconsMgr.clearBeacons();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mBeaconsMgr.stopScanning();
     }
 }

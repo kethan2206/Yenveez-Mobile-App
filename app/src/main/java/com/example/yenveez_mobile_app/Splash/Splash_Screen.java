@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.yenveez_mobile_app.Beacon.FindBeacon;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.R;
@@ -39,7 +40,7 @@ public class Splash_Screen extends AppCompatActivity {
                     startActivity(new Intent(Splash_Screen.this, Login.class));
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 } else {
-                    startActivity(new Intent(Splash_Screen.this, MainActivity.class));
+                    startActivity(new Intent(Splash_Screen.this, FindBeacon.class));
                 }
                 finish();
             }

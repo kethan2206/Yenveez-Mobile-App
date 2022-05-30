@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.yenveez_mobile_app.Beacon.FindBeacon;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.R;
 import com.example.yenveez_mobile_app.Regisration.Registration;
@@ -218,7 +219,7 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBarLog.setVisibility(View.GONE);
                 if (task.isSuccessful()){
-                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    Intent intent = new Intent(Login.this, FindBeacon.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK); //Used to kill the login activity once it go to the MainActivity
                     startActivity(intent);
                     Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
@@ -286,7 +287,7 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
-                                        startActivity(new Intent(Login.this,MainActivity.class));
+                                        startActivity(new Intent(Login.this,FindBeacon.class));
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
                                         progressBarLog.setVisibility(View.GONE);
@@ -315,7 +316,7 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(Login.this, MainActivity.class));
+                            startActivity(new Intent(Login.this, FindBeacon.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
@@ -356,7 +357,7 @@ public class Login extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                startActivity(new Intent(Login.this,MainActivity.class));
+                                                startActivity(new Intent(Login.this,FindBeacon.class));
                                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                 progressBarLog.setVisibility(View.GONE);
                                                 finish();
@@ -398,7 +399,7 @@ public class Login extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
-                                                startActivity(new Intent(Login.this,MainActivity.class));
+                                                startActivity(new Intent(Login.this,FindBeacon.class));
                                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                                 progressBarLog.setVisibility(View.GONE);
                                                 finish();
