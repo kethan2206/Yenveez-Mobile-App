@@ -45,9 +45,7 @@ import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
 import com.kkmcn.kbeaconlib2.KBeacon;
 import com.kkmcn.kbeaconlib2.KBeaconsMgr;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeaconMgrDelegate, SensorEventListener {
 
@@ -61,7 +59,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
 
-    DatabaseReference databaseReferenceProfilePic, databaseReferenceUuid;
+    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId;
 
     BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
@@ -78,7 +76,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     private final static int  MAX_ERROR_SCAN_NUMBER = 2;
     int beaconRssi;
 
-    public final ArrayList<String> UuidList = new ArrayList<>();
+    final ArrayList<String> UuidList = new ArrayList<>();
 
 
     /**onClick profile*/
@@ -178,8 +176,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         });
 
         /** Retrieve all the UUID in a Array List */
-        databaseReferenceUuid = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Malls");
-        databaseReferenceUuid.addValueEventListener(new ValueEventListener() {
+        databaseReferenceMacId = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Malls");
+        databaseReferenceMacId.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UuidList.clear();
@@ -276,22 +274,12 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             Log.v(TAG, "beacon name:" + beacon.getName());
             Log.v(TAG, "beacon rssi:" + beacon.getRssi());
 
-            /** get ADV packet */
-            for (KBAdvPacketBase advPacketBase : beacon.allAdvPackets()){
-                switch (advPacketBase.getAdvType()){
-                    case KBAdvType.IBeacon:
-                        KBAdvPacketIBeacon advPacketIBeacon = (KBAdvPacketIBeacon) advPacketBase;
-                        String Uuid = advPacketIBeacon.getUuid();
-                        Log.v(TAG,"IBeacon UUID:" + Uuid);
-                        if (UuidList.contains(Uuid)){
-                            StartPedometer();
-                        } else {
-                            StopPedometer();
-                        }
-                }
+            /** Checking whether the current mac exist in database */
+            if (UuidList.contains(beacon.getMac())){
+                StartPedometer();
+            } else {
+                StopPedometer();
             }
-            //Clear all scanned packet
-            beacon.removeAdvPacket();
 
             beaconRssi = beacon.getRssi();
             rssiText.setText(String.valueOf(beaconRssi));
