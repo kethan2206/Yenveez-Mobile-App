@@ -57,4 +57,7 @@ dependencies {
     //facebook Auth
     implementation 'com.facebook.android:facebook-login:latest.release'
 
+    //Runtime Permission
+    implementation 'com.karumi:dexter:6.2.3'
+
 }

@@ -101,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /** Checking location permission allowed or not */
-        if (!checkBluetoothPermitAllowed())
-        {
-            Toast.makeText(this, "Bluetooth scanning need location permission", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        /** Checking location permission allowed or not */
+//        if (!checkBluetoothPermitAllowed())
+//        {
+//            Toast.makeText(this, "Bluetooth scanning need location permission", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -185,30 +185,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /** Checking if all permissions are allowed or not*/
-
-    public boolean checkBluetoothPermitAllowed(){
-        if (!Utils.isLocationBluePermission(this)){
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                    23);
-
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
-            }
-
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
-            }
-
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
+//    /** Checking if all permissions are allowed or not*/
+//
+//    public boolean checkBluetoothPermitAllowed(){
+//        if (!Utils.isLocationBluePermission(this)){
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+//                    23);
+//
+//            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                Toast.makeText(this, "getString(R.string.location_permit_needed_for_ble)", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            return false;
+//        }
+//        else{
+//            return true;
+//        }
+//    }
 
     /** logout method */
 
