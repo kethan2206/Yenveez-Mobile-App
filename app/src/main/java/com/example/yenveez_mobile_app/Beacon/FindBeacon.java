@@ -374,7 +374,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
         float steps = mStepCounterAndroid - mInitialStepCount;
-        if (steps >=0 && steps <= 2){
+        if (steps >=0 && steps <= 1){
             AdsBanner.setVisibility(View.VISIBLE);
         }
     }
