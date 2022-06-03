@@ -1,8 +1,11 @@
 package com.example.yenveez_mobile_app.Beacon;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -59,11 +62,12 @@ import java.util.List;
 public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeaconMgrDelegate, SensorEventListener {
 
     private static final String TAG = "Beacon";
-    public static final  int REQUEST_ENABLE_BT = 1;
-    TextView beaconScanStatusText,stepsCount, rssiText, energyTextView;
-    ImageView profile_image_small;
-    ProgressBar progressBarBeacon,progressBarBeaconScan;
+    public static final int REQUEST_ENABLE_BT = 1;
+    TextView beaconScanStatusText, stepsCount, rssiText, energyTextView;
+    ImageView profile_image_small, AdsImage, closeAdBanner;
+    ProgressBar progressBarBeacon, progressBarBeaconScan;
     Button stop;
+    CardView AdsBanner;
 
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
@@ -82,15 +86,17 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     private KBeaconsMgr mBeaconsMgr;
     private int mScanFailedContinueNum = 0;
-    private final static int  MAX_ERROR_SCAN_NUMBER = 2;
+    private final static int MAX_ERROR_SCAN_NUMBER = 2;
     int beaconRssi;
+    public static final int BLUETOOTH_REQ_CODE = 1;
+    public static  boolean CHECK_ALL_PERMISSION = false;
 
     final ArrayList<String> UuidList = new ArrayList<>();
 
 
     /**onClick profile*/
 
-    public void ProfilePage(View view){
+    public void ProfilePage(View view) {
         progressBarBeacon.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -100,14 +106,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 progressBarBeacon.setVisibility(View.GONE);
                 finish();
             }
-        },900);
+        }, 900);
     }
 
 
     /**stop button for testing*/
 
-    public void Stop(View view){
-        sensorManager.unregisterListener(this,mSensor);
+    public void Stop(View view) {
+        sensorManager.unregisterListener(this, mSensor);
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
         stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
@@ -116,7 +122,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +134,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mAuth = (FirebaseAuth) FirebaseAuth.getInstance();
         firebaseUser = (FirebaseUser) mAuth.getCurrentUser();
 
-        bluetoothManager = (BluetoothManager) getSystemService(BluetoothManager.class);
-        bluetoothAdapter = (BluetoothAdapter) bluetoothManager.getAdapter();
-
         stop = (Button) findViewById(R.id.stop);
 
         profile_image_small = (ImageView) findViewById(R.id.profile_image_small);
@@ -141,24 +144,30 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         rssiText = (TextView) findViewById(R.id.rssiText);
         energyTextView = (TextView) findViewById(R.id.energyTextView);
 
+        AdsBanner = (CardView) findViewById(R.id.AdsBanner);
+        AdsImage = (ImageView) findViewById(R.id.AdsImage);
+        closeAdBanner = (ImageView) findViewById(R.id.closeAdBanner);
 
+        closeAdBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdsBanner.setVisibility(View.GONE);
+            }
+        });
+
+        /**Enabling the bluetooth if it is not enable*/
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null){
+            Toast.makeText(this, "Device does not support Bluetooth function", Toast.LENGTH_SHORT).show();
+        }
+
+        if (!bluetoothAdapter.isEnabled()){
+            Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(bluetoothIntent,BLUETOOTH_REQ_CODE);
+        }
+
+        //Calling permissions check function
         CheckAllPermissions();
-
-
-//        /**Enabling the bluetooth if it is not enable*/
-//
-//        if (!bluetoothAdapter.isEnabled()){
-//            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//        }
-//
-//
-//        /**Accessing permission for Physical Sensor of the device*/
-//
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED){
-//            //ask for permission
-//            requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, Sensor.TYPE_STEP_COUNTER);
-//        }
 
 
         databaseReferenceProfilePic = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
@@ -236,6 +245,19 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     }
 
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            finish();
+            startActivity(getIntent());
+        } else if (resultCode == RESULT_CANCELED){
+            Toast.makeText(this, "Turn on bluetooth and restart the app to Scan Beacon", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /** checking all permissions */
     public void CheckAllPermissions(){
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
@@ -248,13 +270,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                             Uri uri = Uri.fromParts("package",getPackageName(),null);
                             intent.setData(uri);
                             startActivity(intent);
+                        } else {
+                            CHECK_ALL_PERMISSION = true;
                         }
                     }
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
-                        Toast.makeText(FindBeacon.this, "Please Restart the App to Scan the Beacon", Toast.LENGTH_SHORT).show();
                     }
                 }).check();
     }
@@ -350,6 +373,10 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
+        float steps = mStepCounterAndroid - mInitialStepCount;
+        if (steps >=0 && steps <= 2){
+            AdsBanner.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
