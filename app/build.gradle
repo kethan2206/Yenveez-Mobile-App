@@ -60,4 +60,7 @@ dependencies {
     //Runtime Permission
     implementation 'com.karumi:dexter:6.2.3'
 
+    //Image Slider
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+
 }

@@ -162,11 +162,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/AdsImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            app:iss_auto_cycle="true"
+            app:iss_period="1000"
+            app:iss_delay="1000"/>
 
         <ImageView
             android:id="@+id/closeAdBanner"

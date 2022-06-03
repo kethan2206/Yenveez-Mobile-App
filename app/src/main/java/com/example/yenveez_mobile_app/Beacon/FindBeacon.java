@@ -5,8 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -14,27 +12,30 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.MainClass.UserData;
 import com.example.yenveez_mobile_app.R;
@@ -50,8 +51,6 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketBase;
-import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvPacketIBeacon;
 import com.kkmcn.kbeaconlib2.KBAdvPackage.KBAdvType;
 import com.kkmcn.kbeaconlib2.KBeacon;
 import com.kkmcn.kbeaconlib2.KBeaconsMgr;
@@ -64,7 +63,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     private static final String TAG = "Beacon";
     public static final int REQUEST_ENABLE_BT = 1;
     TextView beaconScanStatusText, stepsCount, rssiText, energyTextView;
-    ImageView profile_image_small, AdsImage, closeAdBanner;
+    ImageView profile_image_small, closeAdBanner;
+    ImageSlider AdsImage;
     ProgressBar progressBarBeacon, progressBarBeaconScan;
     Button stop;
     CardView AdsBanner;
@@ -72,7 +72,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
 
-    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId;
+    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner;
 
     BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
@@ -92,6 +92,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     public static  boolean CHECK_ALL_PERMISSION = false;
 
     final ArrayList<String> UuidList = new ArrayList<>();
+    final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
 
 
     /**onClick profile*/
@@ -145,7 +146,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyTextView = (TextView) findViewById(R.id.energyTextView);
 
         AdsBanner = (CardView) findViewById(R.id.AdsBanner);
-        AdsImage = (ImageView) findViewById(R.id.AdsImage);
+        AdsImage = (ImageSlider) findViewById(R.id.AdsImage);
         closeAdBanner = (ImageView) findViewById(R.id.closeAdBanner);
 
         closeAdBanner.setOnClickListener(new View.OnClickListener() {
@@ -335,6 +336,22 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             /** Checking whether the current mac exist in database */
             if (UuidList.contains(beacon.getMac())){
                 StartPedometer();
+                databaseReferenceAdsBanner = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Ads Banner").child(beacon.getMac());
+                databaseReferenceAdsBanner.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        AdsBannerUrlList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            AdsBannerUrlList.add(new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT));
+                        }
+                        AdsImage.setImageList(AdsBannerUrlList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             } else {
                 StopPedometer();
             }
