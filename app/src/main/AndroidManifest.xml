@@ -23,6 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Yenveez_Mobile_App">
+
         <activity
             android:name=".Beacon.FindBeacon"
             android:exported="false" />

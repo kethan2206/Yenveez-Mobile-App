@@ -74,7 +74,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner;
 
-    BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
 
     SensorManager sensorManager; //Used for accessing acceleration sensor
@@ -336,15 +335,17 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             /** Checking whether the current mac exist in database */
             if (UuidList.contains(beacon.getMac())){
                 StartPedometer();
+
+                //Collecting Ads Data from the Data Base
                 databaseReferenceAdsBanner = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Ads Banner").child(beacon.getMac());
                 databaseReferenceAdsBanner.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         AdsBannerUrlList.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                            AdsBannerUrlList.add(new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT));
+                            AdsBannerUrlList.add(new SlideModel(dataSnapshot.getValue().toString(),ScaleTypes.FIT)); //Adding into the AdsBanner Url List
                         }
-                        AdsImage.setImageList(AdsBannerUrlList);
+                        AdsImage.setImageList(AdsBannerUrlList); //setting all the Ads Image as a slider
                     }
 
                     @Override
@@ -391,6 +392,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
         float steps = mStepCounterAndroid - mInitialStepCount;
+
+        //Showing Ad Banner
         if (steps >=1 && steps <= 2){
             AdsBanner.setVisibility(View.VISIBLE);
         }

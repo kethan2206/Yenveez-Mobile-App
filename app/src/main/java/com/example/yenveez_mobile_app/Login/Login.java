@@ -49,6 +49,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -241,9 +242,9 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        //callbackManager.onActivityResult(requestCode, resultCode, data);
-            progressBarLog.setVisibility(View.GONE);
+        progressBarLog.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -316,7 +317,31 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(Login.this, FindBeacon.class));
+                            assert user != null;
+                            String userId = user.getUid();
+                            String email = user.getEmail();
+                            String name = user.getDisplayName();
+                            String imageUrl = user.getPhotoUrl().toString();
+                            databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
+                                    .child(userId);
+                            HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
+                            hashMap.put("userId",userId);
+                            hashMap.put("userName",name);
+                            hashMap.put("userEmail",email);
+                            hashMap.put("imageUrl",imageUrl);
+                            hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
+                            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        startActivity(new Intent(Login.this,FindBeacon.class));
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        progressBarLog.setVisibility(View.GONE);
+                                        finish();
+                                        Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
@@ -345,13 +370,14 @@ public class Login extends AppCompatActivity {
                                     String userId = user.getUid();
                                     String name = user.getDisplayName();
                                     String email = user.getEmail();
+                                    String imageUrl = user.getPhotoUrl().toString();
                                     databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
                                             .child(userId);
                                     HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
                                     hashMap.put("userId",userId);
                                     hashMap.put("userName",name);
                                     hashMap.put("userEmail",email);
-                                    hashMap.put("imageUrl","null");
+                                    hashMap.put("imageUrl",imageUrl);
                                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
