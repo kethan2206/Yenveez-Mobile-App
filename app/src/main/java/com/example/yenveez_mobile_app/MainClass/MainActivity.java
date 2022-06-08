@@ -9,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,7 +26,7 @@ import com.bumptech.glide.Glide;
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.R;
-import com.example.yenveez_mobile_app.Beacon.Utils;
+import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -89,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public void RedeemOnClick(View view){
+        startActivity(new Intent(MainActivity.this, Redeem_Activity.class));
+    }
+
     /** onClick Edit Profile pic button */
 
     public void EditProfilePic(View view){
@@ -115,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         //Other Functions!!
 
         /** function for opening gallery on clicking edit button */
-
         launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         /** fetching user data to the profile page from database */
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

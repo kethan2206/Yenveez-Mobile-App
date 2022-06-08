@@ -192,24 +192,24 @@ public class Login extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         //Facebook login config
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        handleFacebookAccessToken(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        // App code
-                    }
-                });
+//        callbackManager = CallbackManager.Factory.create();
+//        LoginManager.getInstance().registerCallback(callbackManager,
+//                new FacebookCallback<LoginResult>() {
+//                    @Override
+//                    public void onSuccess(LoginResult loginResult) {
+//                        handleFacebookAccessToken(loginResult.getAccessToken());
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        // App code
+//                    }
+//
+//                    @Override
+//                    public void onError(FacebookException exception) {
+//                        // App code
+//                    }
+//                });
     }
 
     /** Login function with email */
@@ -234,7 +234,6 @@ public class Login extends AppCompatActivity {
     }
 
     /** Sign In method for Google */
-
     private void SignInGoogle(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -242,7 +241,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         progressBarLog.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent
@@ -260,7 +259,6 @@ public class Login extends AppCompatActivity {
     }
 
     /** Initialising fireBaseAuthWithGoogle(account) */
-
     private void fireBaseAuthWithGoogle(GoogleSignInAccount acct){
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
         mAuth.signInWithCredential(credential)
@@ -306,52 +304,49 @@ public class Login extends AppCompatActivity {
 
 
     /**handler method for facebook login*/
-
-    private void handleFacebookAccessToken(AccessToken token) {
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            assert user != null;
-                            String userId = user.getUid();
-                            String email = user.getEmail();
-                            String name = user.getDisplayName();
-                            String imageUrl = user.getPhotoUrl().toString();
-                            databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
-                                    .child(userId);
-                            HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
-                            hashMap.put("userId",userId);
-                            hashMap.put("userName",name);
-                            hashMap.put("userEmail",email);
-                            hashMap.put("imageUrl",imageUrl);
-                            hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
-                            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        startActivity(new Intent(Login.this,FindBeacon.class));
-                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                        progressBarLog.setVisibility(View.GONE);
-                                        finish();
-                                        Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
+//    private void handleFacebookAccessToken(AccessToken token) {
+//        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            assert user != null;
+//                            String userId = user.getUid();
+//                            String email = user.getEmail();
+//                            String name = user.getDisplayName();
+//                            String imageUrl = user.getPhotoUrl().toString();
+//                            databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
+//                                    .child(userId);
+//                            HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
+//                            hashMap.put("userId",userId);
+//                            hashMap.put("userName",name);
+//                            hashMap.put("userEmail",email);
+//                            hashMap.put("imageUrl",imageUrl);
+//                            hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
+//                            databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()){
+//                                        startActivity(new Intent(Login.this,FindBeacon.class));
+//                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                                        progressBarLog.setVisibility(View.GONE);
+//                                        finish();
+//                                        Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
 
     /** Twitter SignIn */
-
     private void SignInTwitter(){
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
         // Target specific email with login hint.
@@ -377,7 +372,7 @@ public class Login extends AppCompatActivity {
                                     hashMap.put("userId",userId);
                                     hashMap.put("userName",name);
                                     hashMap.put("userEmail",email);
-                                    hashMap.put("imageUrl",imageUrl);
+                                    hashMap.put("imageUrl","default");
                                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -413,12 +408,14 @@ public class Login extends AppCompatActivity {
                                     assert user != null;
                                     String userId = user.getUid();
                                     String name = user.getDisplayName();
+                                    String imageUrl = user.getPhotoUrl().toString();
+                                    String email = user.getEmail();
                                     databaseReference = FirebaseDatabase.getInstance().getReference("Users") //Creating database path for storing data
                                             .child(userId);
                                     HashMap<String, String> hashMap = new HashMap<>(); //HashMap is used for storing the users required data
                                     hashMap.put("userId",userId);
                                     hashMap.put("userName",name);
-                                    hashMap.put("userEmail","null");
+                                    hashMap.put("userEmail",email);
                                     hashMap.put("imageUrl","default");
                                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
