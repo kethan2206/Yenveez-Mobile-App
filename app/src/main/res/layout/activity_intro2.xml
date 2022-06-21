@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
+    tools:context=".Intro.Intro2">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/greenbackgrounficons"
+        tools:ignore="contentDescription"/>
+
+    <ImageView
+        android:id="@+id/intro2GreenPath"
+        android:layout_width="400dp"
+        android:layout_height="380dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/intro2greenpath"
+        tools:ignore="contentDescription" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/intro2GirlOnCycle"
+        android:layout_width="310dp"
+        android:layout_height="230dp"
+        android:onClick="onClickIntro2"
+        app:layout_constraintBottom_toBottomOf="@+id/intro2GreenPath"
+        app:layout_constraintEnd_toEndOf="@+id/intro2GreenPath"
+        app:layout_constraintStart_toStartOf="@+id/intro2GreenPath"
+        app:layout_constraintTop_toTopOf="@+id/intro2GreenPath"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/introgirlonthebicycle"
+        tools:ignore="contentDescription" />
+
+    <TextView
+        android:id="@+id/intro3rdPara"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/comic_neue_bold"
+        android:text="@string/intro_3rdpara"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/intro2GreenPath"
+        app:layout_constraintEnd_toEndOf="@+id/intro2GreenPath"
+        app:layout_constraintStart_toStartOf="@+id/intro2GreenPath"
+        app:layout_constraintTop_toBottomOf="@+id/intro2GirlOnCycle"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <ImageView
+        android:id="@+id/intro2BluePath"
+        android:layout_width="400dp"
+        android:layout_height="290dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:srcCompat="@drawable/intro2bluepath"
+        tools:ignore="contentDescription" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/intro2jumping"
+        android:layout_width="310dp"
+        android:layout_height="310dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/intro2BluePath"
+        app:layout_constraintStart_toStartOf="@+id/intro2BluePath"
+        app:layout_constraintTop_toTopOf="@+id/intro2BluePath"
+        app:layout_constraintVertical_bias="1.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/introjumping"
+        tools:ignore="contentDescription" />
+
+    <TextView
+        android:id="@+id/intro4thPara"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/comic_neue_bold"
+        android:text="@string/intro_4thpara"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/intro2BluePath"
+        app:layout_constraintEnd_toEndOf="@+id/intro2BluePath"
+        app:layout_constraintStart_toStartOf="@+id/intro2BluePath"
+        app:layout_constraintTop_toTopOf="@+id/intro2BluePath"
+        app:layout_constraintVertical_bias="0.19999999" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/intro_button_background"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
+        android:onClick="onClickIntro2"
+        android:padding="10dp"
+        android:text="Next"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

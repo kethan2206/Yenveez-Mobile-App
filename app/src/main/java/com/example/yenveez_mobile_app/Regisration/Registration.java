@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class Registration extends AppCompatActivity {
         String name = editText_name.getText().toString();
         String email = editText_EmailReg.getText().toString();
         String password = editText_passReg.getText().toString();
-        String phone = editText_Phone.getText().toString();
+        String confirmPass = editText_ConfirmPassReg.getText().toString();
 
         /** String expression for verifying the pattern of an email */
 
@@ -64,20 +65,20 @@ public class Registration extends AppCompatActivity {
             editText_passReg.setError("Minimum Password length should be 8 character");
             editText_passReg.requestFocus();
             return;
-        } else if(phone.isEmpty()){
-            editText_Phone.setError("Please provide a Phone Number");
-            editText_Phone.requestFocus();
+        } else if(confirmPass.isEmpty()){
+            editText_ConfirmPassReg.setError("Please confirm your password");
+            editText_ConfirmPassReg.requestFocus();
             return;
         } else if (!email.matches(Expn)){
             editText_EmailReg.setError("Provide a valid Email");
             editText_EmailReg.requestFocus();
             return;
-        } else if (phone.length() < 10){
-            editText_Phone.setError("Provide a valid Phone number");
-            editText_Phone.requestFocus();
+        } else if (!confirmPass.equals(password)){
+            editText_ConfirmPassReg.setError("Password is not matched");
+            editText_ConfirmPassReg.requestFocus();
         }
         else {
-            CreateUser(name,email,password,phone);
+            CreateUser(name,email,password);
         }
     }
 
@@ -96,7 +97,7 @@ public class Registration extends AppCompatActivity {
         },1000);
     }
 
-    EditText editText_name, editText_EmailReg, editText_passReg, editText_Phone;
+    EditText editText_name, editText_EmailReg, editText_passReg, editText_ConfirmPassReg;
     ProgressBar progressBarReg;
     FirebaseAuth mAuth; //Creating reference for Firebase Authentication
     DatabaseReference databaseReference; //Creating reference for Database
@@ -109,10 +110,12 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         editText_name = (EditText) findViewById(R.id.editText_name);
         editText_EmailReg = (EditText) findViewById(R.id.editText_EmailReg);
         editText_passReg = (EditText) findViewById(R.id.editText_passReg);
-        editText_Phone = (EditText) findViewById(R.id.editText_Phone);
+        editText_ConfirmPassReg = (EditText) findViewById(R.id.editText_ConfirmPassReg);
         progressBarReg = (ProgressBar) findViewById(R.id.progressBarReg);
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
@@ -120,7 +123,7 @@ public class Registration extends AppCompatActivity {
 
     /** Function for creating new User */
 
-    private void CreateUser(String name, String email, String password, String phone){
+    private void CreateUser(String name, String email, String password){
         progressBarReg.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -135,7 +138,6 @@ public class Registration extends AppCompatActivity {
                     hashMap.put("userId",userId);
                     hashMap.put("userName",name);
                     hashMap.put("userEmail",email);
-                    hashMap.put("userPhone",phone);
                     hashMap.put("imageUrl","default");
                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
 

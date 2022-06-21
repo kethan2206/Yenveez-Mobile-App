@@ -5,12 +5,12 @@ package com.example.yenveez_mobile_app.Splash;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
-import com.example.yenveez_mobile_app.Login.Login;
-import com.example.yenveez_mobile_app.MainClass.MainActivity;
+import com.example.yenveez_mobile_app.Intro.Intro1;
 import com.example.yenveez_mobile_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +23,8 @@ public class Splash_Screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -37,7 +39,7 @@ public class Splash_Screen extends AppCompatActivity {
             public void run() {
                 FirebaseUser user = mAuth.getCurrentUser(); //checking if user is already exist or not
                 if (user == null){
-                    startActivity(new Intent(Splash_Screen.this, Login.class));
+                    startActivity(new Intent(Splash_Screen.this, Intro1.class));
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 } else {
                     startActivity(new Intent(Splash_Screen.this, FindBeacon.class));

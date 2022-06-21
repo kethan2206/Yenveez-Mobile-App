@@ -24,6 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yenveez_Mobile_App">
         <activity
+            android:name=".Intro.Intro3"
+            android:exported="false" />
+        <activity
+            android:name=".Intro.Intro2"
+            android:exported="false" />
+        <activity
+            android:name=".Intro.Intro1"
+            android:exported="false" />
+        <activity
             android:name=".Redeem.Redeem_Activity"
             android:exported="false" />
         <activity
