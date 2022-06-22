@@ -9,7 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -17,18 +22,23 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.yenveez_mobile_app.About;
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
+import com.example.yenveez_mobile_app.EditProfile;
 import com.example.yenveez_mobile_app.Login.Login;
 import com.example.yenveez_mobile_app.R;
 import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
-    TextView profile_name;
-
-    ActivityResultLauncher<String> launcher; //launcher is used to open gallery
+    TextView profile_name,profile_email, homepageStat;
 
     /** onClick Logout Button */
 
@@ -91,11 +99,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, Redeem_Activity.class));
     }
 
-    /** onClick Edit Profile pic button */
-
-    public void EditProfilePic(View view){
-        launcher.launch("image/*");
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -115,51 +118,62 @@ public class MainActivity extends AppCompatActivity {
 
         profile_image = (ImageView) findViewById(R.id.profile_image);
         profile_name = (TextView) findViewById(R.id.profile_name);
+        profile_email = (TextView) findViewById(R.id.profile_email);
+        homepageStat = (TextView) findViewById(R.id.homepageStat);
 
-        //Other Functions!!
 
-        /** function for opening gallery on clicking edit button */
-        launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        /** Bottom Navigation */
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setSelectedItemId(R.id.navHome);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onActivityResult(Uri result) {
-                profile_image.setImageURI(result);
-                progressBarMain.setVisibility(View.VISIBLE);
-
-                String userId = mAuth.getCurrentUser().getUid();
-
-                final StorageReference storageReference = storage.getReference() //Storing the image in the firebase storage
-                        .child("ProfilePic").child(userId);
-
-                storageReference.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(MainActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                        progressBarMain.setVisibility(View.GONE);
-
-                        //Copying the image link from firebase storage to real time database
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                firebaseDatabase.getInstance().getReference().child("Users").child(userId)
-                                        .child("imageUrl").setValue(result.toString());
-                            }
-                        });
-                    }
-                });
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navHome:
+                        return true;
+                    case R.id.navEditProfile:
+                        startActivity(new Intent(getApplicationContext(), EditProfile.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navMenu:
+                        startActivity(new Intent(getApplicationContext(), About.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navActivity:
+                        startActivity(new Intent(getApplicationContext(),FindBeacon.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navCoupons:
+                        startActivity(new Intent(getApplicationContext(),Redeem_Activity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                }
+                return false;
             }
         });
+
+        //Other Functions!!
 
         progressProfilePic.setVisibility(View.VISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         /** fetching user data to the profile page from database */
         databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
                     profile_name.setText(userData.getUserName());
+                    profile_email.setText(userData.getUserEmail());
+                    homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for 125 seconds.");
                     if (userData.getImageUrl().equals("default")){
                         profile_image.setImageResource(R.drawable.profile_default_pic);
                     } else {

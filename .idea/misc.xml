@@ -27,9 +27,13 @@
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/ic_baseline_visibility_off_24.xml" value="0.1995" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/icon_button_background.xml" value="0.2535" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/intro_button_background.xml" value="0.2455" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/intro_down_pannek_background.xml" value="0.2455" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/intro_down_pannel_background.xml" value="0.2455" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_login.xml" value="0.23236331569664903" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_registration.xml" value="0.23236331569664903" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_reset_password.xml" value="0.23236331569664903" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_about.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_edit_profile.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_find_beacon.xml" value="0.264" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro1.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro2.xml" value="0.27447916666666666" />
@@ -41,10 +45,15 @@
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_registration.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_reset_password.xml" value="0.2439814814814815" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_splash_screen.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar_fifth.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar_fourth.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar_second.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/icon_button_background.xml" value="0.2439814814814815" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/reddem_items.xml" value="0.2734375" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items_popup.xml" value="0.2734375" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/menu/bottom_menu.xml" value="0.27447916666666666" />
       </map>
     </option>
   </component>

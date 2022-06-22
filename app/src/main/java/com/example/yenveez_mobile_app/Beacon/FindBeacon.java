@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.transition.Slide;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -37,9 +38,13 @@ import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.yenveez_mobile_app.About;
+import com.example.yenveez_mobile_app.EditProfile;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.MainClass.UserData;
 import com.example.yenveez_mobile_app.R;
+import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -150,6 +155,42 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         AdsBanner = (CardView) findViewById(R.id.AdsBanner);
         AdsImage = (ImageSlider) findViewById(R.id.AdsImage);
         closeAdBanner = (ImageView) findViewById(R.id.closeAdBanner);
+
+        /** Bottom Navigation */
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setSelectedItemId(R.id.navActivity);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navHome:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navEditProfile:
+                        startActivity(new Intent(getApplicationContext(), EditProfile.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navMenu:
+                        startActivity(new Intent(getApplicationContext(), About.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                    case R.id.navActivity:
+                        return true;
+                    case R.id.navCoupons:
+                        startActivity(new Intent(getApplicationContext(), Redeem_Activity.class));
+                        overridePendingTransition(0,0);
+                        finish();
+                        return true;
+                }
+                return false;
+            }
+        });
 
         closeAdBanner.setOnClickListener(new View.OnClickListener() {
             @Override
