@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -22,13 +21,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.transition.Slide;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -144,7 +141,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
         stop = (Button) findViewById(R.id.stop);
 
-        profile_image_small = (ImageView) findViewById(R.id.profile_image_small);
+        profile_image_small = (ImageView) findViewById(R.id.editProfilePhoto);
         progressBarBeacon = (ProgressBar) findViewById(R.id.progressBarBeacon);
         progressBarBeaconScan = (ProgressBar) findViewById(R.id.progressBarBeaconScan);
         stepsCount = (TextView) findViewById(R.id.stepsCount);

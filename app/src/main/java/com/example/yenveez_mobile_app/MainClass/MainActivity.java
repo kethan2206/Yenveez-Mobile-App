@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
-    TextView profile_name,profile_email, homepageStat;
+    TextView profile_name,profile_email, homepageStat, profile_bio;
 
     /** onClick Logout Button */
 
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         profile_name = (TextView) findViewById(R.id.profile_name);
         profile_email = (TextView) findViewById(R.id.profile_email);
         homepageStat = (TextView) findViewById(R.id.homepageStat);
+        profile_bio = (TextView) findViewById(R.id.profile_bio);
 
 
         /** Bottom Navigation */
@@ -160,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Other Functions!!
 
-        progressProfilePic.setVisibility(View.VISIBLE);
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         /** fetching user data to the profile page from database */
@@ -173,13 +173,15 @@ public class MainActivity extends AppCompatActivity {
                     assert userData != null;
                     profile_name.setText(userData.getUserName());
                     profile_email.setText(userData.getUserEmail());
+                    profile_bio.setText(userData.getUserBio());
                     homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for 125 seconds.");
                     if (userData.getImageUrl().equals("default")){
                         profile_image.setImageResource(R.drawable.profile_default_pic);
                     } else {
                         Glide.with(getApplicationContext()).load(userData.getImageUrl()).into(profile_image);
                     }
-                    progressProfilePic.setVisibility(View.INVISIBLE);
+                    progressProfilePic.setVisibility(View.GONE);
+                    progressBarMain.setVisibility(View.GONE);
                 } else {
                     profile_image.setImageResource(R.drawable.profile_default_pic);
                 }

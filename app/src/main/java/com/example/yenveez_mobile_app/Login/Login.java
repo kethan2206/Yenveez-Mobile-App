@@ -284,7 +284,7 @@ public class Login extends AppCompatActivity {
                             hashMap.put("userName",name);
                             hashMap.put("userEmail",email);
                             hashMap.put("imageUrl",googleProfileImage.toString());
-                            hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
+                            //hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                             databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -376,7 +376,7 @@ public class Login extends AppCompatActivity {
                                     hashMap.put("userName",name);
                                     hashMap.put("userEmail",email);
                                     hashMap.put("imageUrl","default");
-                                    hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
+                                    //hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -420,7 +420,7 @@ public class Login extends AppCompatActivity {
                                     hashMap.put("userName",name);
                                     hashMap.put("userEmail",email);
                                     hashMap.put("imageUrl","default");
-                                    hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
+                                    //hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
                                     databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

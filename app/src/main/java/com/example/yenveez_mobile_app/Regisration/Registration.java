@@ -102,7 +102,8 @@ public class Registration extends AppCompatActivity {
     FirebaseAuth mAuth; //Creating reference for Firebase Authentication
     DatabaseReference databaseReference; //Creating reference for Database
 
-    int RedeemCoin = 0; //Veez coin
+    int RedeemCoin = 0;
+    float EnergyGenerated = 0;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -122,7 +123,6 @@ public class Registration extends AppCompatActivity {
     }
 
     /** Function for creating new User */
-
     private void CreateUser(String name, String email, String password){
         progressBarReg.setVisibility(View.VISIBLE);
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -139,6 +139,8 @@ public class Registration extends AppCompatActivity {
                     hashMap.put("userName",name);
                     hashMap.put("userEmail",email);
                     hashMap.put("imageUrl","default");
+                    hashMap.put("EnergyGenerated",Float.toString(EnergyGenerated));
+                    hashMap.put("userBio","Bio");
                     hashMap.put("RedeemCoin",Integer.toString(RedeemCoin));
 
                     /** setting the value of database as the hashMap to get all the data stored in the Hashmap */

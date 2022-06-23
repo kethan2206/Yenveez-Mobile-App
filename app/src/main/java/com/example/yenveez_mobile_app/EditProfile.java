@@ -48,18 +48,38 @@ public class EditProfile extends AppCompatActivity {
     ActivityResultLauncher<String> launcher; //launcher is used to open gallery
     ImageView editProfilePhoto;
     EditText editProfileEditName,editProfileEditEmail, editProfileEditBio;
-    ProgressBar editProfilePicProgress;
+    ProgressBar editProfilePicProgress, progressBarMain2;
+    String userName, userEmail, userBio;
 
     /** onClick Edit Profile pic button */
     public void EditProfilePic(View view){
         launcher.launch("image/*");
     }
 
+    /** OnClick cross */
     public void CloseEditProfile(View view){
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         finish();
     }
+
+    /** OnClick save Tick */
+    public void SaveData(View view){
+        if (!userName.equals(editProfileEditName.getText().toString())){
+            databaseReference.child("userName").setValue(editProfileEditName.getText().toString());
+            Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
+        } else if (!userEmail.equals(editProfileEditEmail.getText().toString())){
+            databaseReference.child("userEmail").setValue(editProfileEditEmail.getText().toString());
+            Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
+        } else if (!userBio.equals(editProfileEditBio.getText().toString())){
+            databaseReference.child("userBio").setValue(editProfileEditBio.getText().toString());
+            Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Same data cannot be updated", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +93,9 @@ public class EditProfile extends AppCompatActivity {
         editProfilePhoto = (ImageView) findViewById(R.id.editProfilePhoto);
         editProfileEditName = (EditText) findViewById(R.id.editProfileEditName);
         editProfileEditEmail = (EditText) findViewById(R.id.editProfileEditEmail);
+        editProfileEditBio = (EditText) findViewById(R.id.editProfileEditBio);
         editProfilePicProgress = (ProgressBar) findViewById(R.id.editProfilePicProgress);
+        progressBarMain2 = (ProgressBar) findViewById(R.id.progressBarMain2);
 
         /** Bottom Navigation */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -116,6 +138,7 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onActivityResult(Uri result) {
                 editProfilePhoto.setImageURI(result);
+                editProfilePicProgress.setVisibility(View.VISIBLE);
 
                 String userId = mAuth.getCurrentUser().getUid();
 
@@ -125,6 +148,7 @@ public class EditProfile extends AppCompatActivity {
                 storageReference.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        editProfilePicProgress.setVisibility(View.GONE);
                         Toast.makeText(EditProfile.this, "Profile Updated", Toast.LENGTH_SHORT).show();
 
                         //Copying the image link from firebase storage to real time database
@@ -151,14 +175,19 @@ public class EditProfile extends AppCompatActivity {
                 if (snapshot.exists()) {
                     UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
-                    editProfileEditName.setText(userData.getUserName());
-                    editProfileEditEmail.setText(userData.getUserEmail());
+                    userName = userData.getUserName();
+                    userEmail = userData.getUserEmail();
+                    userBio = userData.getUserBio();
+                    editProfileEditName.setText(userName);
+                    editProfileEditEmail.setText(userEmail);
+                    editProfileEditBio.setText(userBio);
                     if (userData.getImageUrl().equals("default")){
                         editProfilePhoto.setImageResource(R.drawable.profile_default_pic);
                     } else {
                         Glide.with(getApplicationContext()).load(userData.getImageUrl()).into(editProfilePhoto);
                     }
                     editProfilePicProgress.setVisibility(View.INVISIBLE);
+                    progressBarMain2.setVisibility(View.GONE);
                 } else {
                     editProfilePhoto.setImageResource(R.drawable.profile_default_pic);
                 }
