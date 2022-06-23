@@ -65,11 +65,9 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     private static final String TAG = "Beacon";
     public static final int REQUEST_ENABLE_BT = 1;
-    TextView beaconScanStatusText, stepsCount, rssiText, energyTextView;
-    ImageView profile_image_small, closeAdBanner;
+    TextView energyTextView;
+    ImageView closeAdBanner;
     ImageSlider AdsImage;
-    ProgressBar progressBarBeacon, progressBarBeaconScan;
-    Button stop;
     CardView AdsBanner;
 
     FirebaseUser firebaseUser;
@@ -97,34 +95,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
 
 
-    /**onClick profile*/
-
-    public void ProfilePage(View view) {
-        progressBarBeacon.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(FindBeacon.this, MainActivity.class));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                progressBarBeacon.setVisibility(View.GONE);
-                finish();
-            }
-        }, 900);
-    }
-
-
-    /**stop button for testing*/
-
-    public void Stop(View view) {
-        sensorManager.unregisterListener(this, mSensor);
-        mStepCounterAndroid = 0;
-        mInitialStepCount = 0;
-        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
-        energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
-        energyTextView.setText(String.valueOf(energyGenerated));
-    }
-
-
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -139,14 +109,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mAuth = (FirebaseAuth) FirebaseAuth.getInstance();
         firebaseUser = (FirebaseUser) mAuth.getCurrentUser();
 
-        stop = (Button) findViewById(R.id.stop);
-
-        profile_image_small = (ImageView) findViewById(R.id.editProfilePhoto);
-        progressBarBeacon = (ProgressBar) findViewById(R.id.progressBarBeacon);
-        progressBarBeaconScan = (ProgressBar) findViewById(R.id.progressBarBeaconScan);
-        stepsCount = (TextView) findViewById(R.id.stepsCount);
-        beaconScanStatusText = (TextView) findViewById(R.id.BeaconScanStatusText);
-        rssiText = (TextView) findViewById(R.id.rssiText);
         energyTextView = (TextView) findViewById(R.id.energyTextView);
 
         AdsBanner = (CardView) findViewById(R.id.AdsBanner);
@@ -212,30 +174,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
 
         databaseReferenceProfilePic = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-
-        /**fetching user profile pic to the profile page from database*/
-
-        databaseReferenceProfilePic.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    UserData userData = snapshot.getValue(UserData.class);
-                    assert userData != null;
-                    if (userData.getImageUrl().equals("default")){
-                        profile_image_small.setImageResource(R.drawable.profile_default_pic);
-                    } else {
-                        Glide.with(getApplicationContext()).load(userData.getImageUrl()).into(profile_image_small);
-                    }
-                } else {
-                    profile_image_small.setImageResource(R.drawable.profile_default_pic);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //Exception error
-            }
-        });
 
         /** Retrieve all the UUID in a Array List */
         databaseReferenceMacId = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Malls");
@@ -333,7 +271,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         sensorManager.unregisterListener(this, mSensor);
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
-        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
     }
@@ -362,8 +299,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     @SuppressLint("SetTextI18n")
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
-        beaconScanStatusText.setText("Beacon found");
-        progressBarBeaconScan.setVisibility(View.GONE);
 
         for (KBeacon beacon: beacons) {
 
@@ -399,7 +334,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             }
 
             beaconRssi = beacon.getRssi();
-            rssiText.setText(String.valueOf(beaconRssi));
         }
     }
 
@@ -416,8 +350,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             Toast.makeText(this, "scan encounter error, error time:" + mScanFailedContinueNum, Toast.LENGTH_SHORT).show();
         }
         mScanFailedContinueNum++;
-        beaconScanStatusText.setText("Scan failed");
-        progressBarBeaconScan.setVisibility(View.GONE);
     }
 
 
@@ -429,13 +361,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         }
         mStepCounterAndroid = sensorEvent.values[0];
 
-        stepsCount.setText(String.valueOf(mStepCounterAndroid - mInitialStepCount));
-        energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
-        energyTextView.setText(String.valueOf(energyGenerated));
         float steps = mStepCounterAndroid - mInitialStepCount;
+        energyGenerated = steps * 5;
+        energyTextView.setText(String.valueOf(energyGenerated));
+
+
 
         //Showing Ad Banner
-        if (steps >=1 && steps <= 2){
+        if (steps >=0 && steps <= 2){
             AdsBanner.setVisibility(View.VISIBLE);
         }
     }

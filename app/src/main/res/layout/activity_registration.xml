@@ -7,6 +7,22 @@
     android:background="@drawable/screen_background"
     tools:context=".Regisration.Registration">
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@drawable/signinbutton"
+        android:onClick="Register"
+        android:text="Join us"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_ConfirmPassReg" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
@@ -27,6 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -36,11 +53,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tagline"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/loginbox1"
         tools:ignore="ContentDescription" />
-
 
 
     <ImageView
@@ -182,26 +196,6 @@
         app:layout_constraintTop_toTopOf="@+id/editText_ConfirmPassReg"
         app:srcCompat="@drawable/padlock"
         tools:ignore="ContentDescription" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/signinbutton"
-        android:onClick="Register"
-        android:text="Join us"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/loginBox"
-        app:layout_constraintEnd_toEndOf="@+id/loginBox"
-        app:layout_constraintStart_toStartOf="@+id/loginBox"
-        app:layout_constraintTop_toBottomOf="@+id/editText_ConfirmPassReg"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
