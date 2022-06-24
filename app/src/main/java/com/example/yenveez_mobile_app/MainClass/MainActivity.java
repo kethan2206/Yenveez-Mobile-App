@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
-    TextView profile_name,profile_email, homepageStat, profile_bio;
+    TextView profile_name,profile_email, homepageStat, profile_bio,homepageEnergyScore;
 
     /** onClick Logout Button */
 
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         profile_email = (TextView) findViewById(R.id.profile_email);
         homepageStat = (TextView) findViewById(R.id.homepageStat);
         profile_bio = (TextView) findViewById(R.id.profile_bio);
+        homepageEnergyScore = (TextView) findViewById(R.id.homepageEnergyScore);
 
 
         /** Bottom Navigation */
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    homepageEnergyScore.setText(snapshot.child("EnergyGenerated").getValue().toString());
                     UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
                     profile_name.setText(userData.getUserName());

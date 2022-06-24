@@ -73,7 +73,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
 
-    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner;
+    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner, databaseReference;
 
     BluetoothAdapter bluetoothAdapter;
 
@@ -94,6 +94,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<String> UuidList = new ArrayList<>();
     final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
 
+    float Energy, finalEnergy;
+    public static float mEnergyGenerated = 0;
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -221,6 +223,20 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
         /**start scanning the beacon*/
         ScanBeacon();
+        databaseReference = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Energy = Float.parseFloat(snapshot.child("EnergyGenerated").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -273,6 +289,11 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mInitialStepCount = 0;
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
+        databaseReference.child("EnergyGenerated").setValue(Energy + mEnergyGenerated);
+    }
+
+    public void Stop(View view){
+        StopPedometer();
     }
 
     /**Beacon Scan function*/
@@ -365,7 +386,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyGenerated = steps * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
 
-
+        mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated;
 
         //Showing Ad Banner
         if (steps >=0 && steps <= 2){
