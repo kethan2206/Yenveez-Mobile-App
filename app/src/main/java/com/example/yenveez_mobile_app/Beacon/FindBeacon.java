@@ -94,8 +94,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<String> UuidList = new ArrayList<>();
     final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
 
-    float Energy, finalEnergy;
-    public static float mEnergyGenerated = 0;
+    float Energy;
+    public static float mEnergyGenerated;
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -223,6 +223,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
         /**start scanning the beacon*/
         ScanBeacon();
+
         databaseReference = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -289,7 +290,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mInitialStepCount = 0;
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
-        databaseReference.child("EnergyGenerated").setValue(Energy + mEnergyGenerated);
     }
 
     public void Stop(View view){
@@ -332,6 +332,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             /** Checking whether the current mac exist in database */
             if (UuidList.contains(beacon.getMac())){
                 StartPedometer();
+                databaseReference.child("EnergyGenerated").setValue(Energy + mEnergyGenerated);
+                mEnergyGenerated = 0;
 
                 //Collecting Ads Data from the Data Base
                 databaseReferenceAdsBanner = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Ads Banner").child(beacon.getMac());
