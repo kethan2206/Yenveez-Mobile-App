@@ -1,5 +1,6 @@
 package com.example.yenveez_mobile_app.Beacon;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -66,7 +67,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     private static final String TAG = "Beacon";
     public static final int REQUEST_ENABLE_BT = 1;
     TextView energyTextView;
-    ImageView closeAdBanner;
+    ImageView closeAdBanner, activityBulb;
     ImageSlider AdsImage;
     CardView AdsBanner;
 
@@ -93,6 +94,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     final ArrayList<String> UuidList = new ArrayList<>();
     final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
+    final ArrayList<Integer> BulbShining = new ArrayList<>();
 
     float Energy;
     public static float mEnergyGenerated;
@@ -116,6 +118,13 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         AdsBanner = (CardView) findViewById(R.id.AdsBanner);
         AdsImage = (ImageSlider) findViewById(R.id.AdsImage);
         closeAdBanner = (ImageView) findViewById(R.id.closeAdBanner);
+        activityBulb = (ImageView) findViewById(R.id.activityBulb);
+
+        BulbShining.add(R.drawable.activitybulbshinningprogress5);
+        BulbShining.add(R.drawable.activitybulbshinningprogress2);
+        BulbShining.add(R.drawable.activitybulbshinningprogress3);
+        BulbShining.add(R.drawable.activitybulbshinningprogress4);
+        BulbShining.add(R.drawable.activity1bulbshinningprogress);
 
         /** Bottom Navigation */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -387,6 +396,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         float steps = mStepCounterAndroid - mInitialStepCount;
         energyGenerated = steps * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
+
+        int i = 2;
+        while (i < BulbShining.size()){
+            if (energyGenerated % 20 == 0){
+                activityBulb.setImageResource(BulbShining.get(i));
+            }
+            i++;
+        }
 
         mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated;
 

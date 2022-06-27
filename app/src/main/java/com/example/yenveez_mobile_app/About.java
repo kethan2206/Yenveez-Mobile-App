@@ -49,6 +49,9 @@ public class About extends AppCompatActivity {
                         finish();
                         return true;
                     case R.id.navCoupons:
+                        startActivity(new Intent(getApplicationContext(), Redeem_Activity.class));
+                        overridePendingTransition(0,0);
+                        finish();
                         return true;
                 }
                 return false;

@@ -8,11 +8,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +40,7 @@ public class Redeem_Activity extends AppCompatActivity {
     DatabaseReference databaseReference;
     RedeemAdapter redeemAdapter;
     List<RedeemData> redeemDataList;
+    ProgressBar progressBarRedeem;
 
 
     public void RedeemItemOnClick(View view){
@@ -56,8 +59,11 @@ public class Redeem_Activity extends AppCompatActivity {
 
         redeemItemRecyclerView = findViewById(R.id.redeemItemRecyclerView);
         redeemItemRecyclerView.setHasFixedSize(true);
-        redeemItemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         redeemItemRecyclerView.setAdapter(redeemAdapter);
+        progressBarRedeem = (ProgressBar) findViewById(R.id.progressBarRedeem);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        redeemItemRecyclerView.setLayoutManager(gridLayoutManager);
 
         /** Bottom Navigation */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -103,6 +109,7 @@ public class Redeem_Activity extends AppCompatActivity {
                 redeemDataList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     redeemDataList.add(dataSnapshot.getValue(RedeemData.class));
+                    progressBarRedeem.setVisibility(View.INVISIBLE);
                 }
                 redeemAdapter.notifyDataSetChanged();
             }
