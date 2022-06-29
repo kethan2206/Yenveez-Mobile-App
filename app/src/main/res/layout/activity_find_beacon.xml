@@ -157,7 +157,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/AdsBanner"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +171,15 @@
             app:iss_auto_cycle="true"
             app:iss_delay="1000"
             app:iss_period="1000"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ads"
+                android:textColor="@color/white" />
+        </com.denzcoskun.imageslider.ImageSlider>
 
         <ImageView
             android:id="@+id/closeAdBanner"

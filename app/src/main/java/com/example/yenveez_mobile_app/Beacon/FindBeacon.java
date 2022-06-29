@@ -98,6 +98,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     float Energy;
     public static float mEnergyGenerated = 0;
+    public static int BulbCounter = 0;
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -368,7 +369,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 if (finalEnergy != 0){
                     databaseReference.child("EnergyGenerated").setValue(finalEnergy);
                 }
-                System.out.println("energy" + (Energy + mEnergyGenerated));
             }
 
             beaconRssi = beacon.getRssi();
@@ -403,8 +403,26 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyGenerated = steps * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
 
+        /** setting up the Bulb Lighting Bar */
+        if (steps % 5 == 0){
+            BulbCounter++;
+            System.out.println("counter ++ " + BulbCounter);
+            if (BulbCounter == 1){
+                activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
+            } else if (BulbCounter == 2){
+                activityBulb.setImageResource(R.drawable.activitybulbshinningprogress2);
+            } else if (BulbCounter == 3){
+                activityBulb.setImageResource(R.drawable.activitybulbshinningprogress3);
+            } else if (BulbCounter == 4){
+                activityBulb.setImageResource(R.drawable.activitybulbshinningprogress4);
+            } else if (BulbCounter == 5){
+                activityBulb.setImageResource(R.drawable.activitybulbshinningprogress5);
+            } else if (BulbCounter > 5){
+                BulbCounter = 0;
+            }
+        }
 
-        mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated;
+        mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated; //Calculating net energy
 
         //Showing Ad Banner
         if (steps >=0 && steps <= 2){
