@@ -97,7 +97,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<Integer> BulbShining = new ArrayList<>();
 
     float Energy;
-    public static float mEnergyGenerated;
+    public static float mEnergyGenerated = 0;
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -233,6 +233,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         /**start scanning the beacon*/
         ScanBeacon();
 
+        /**  getting the value of energy from database */
         databaseReference = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -341,8 +342,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             /** Checking whether the current mac exist in database */
             if (UuidList.contains(beacon.getMac())){
                 StartPedometer();
-                databaseReference.child("EnergyGenerated").setValue(Energy + mEnergyGenerated);
-                mEnergyGenerated = 0;
 
                 //Collecting Ads Data from the Data Base
                 databaseReferenceAdsBanner = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("Ads Banner").child(beacon.getMac());
@@ -363,6 +362,13 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 });
             } else {
                 StopPedometer();
+                float finalEnergy = Energy + mEnergyGenerated;
+                mEnergyGenerated = 0;
+
+                if (finalEnergy != 0){
+                    databaseReference.child("EnergyGenerated").setValue(finalEnergy);
+                }
+                System.out.println("energy" + (Energy + mEnergyGenerated));
             }
 
             beaconRssi = beacon.getRssi();
@@ -397,13 +403,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyGenerated = steps * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
 
-        int i = 2;
-        while (i < BulbShining.size()){
-            if (energyGenerated % 20 == 0){
-                activityBulb.setImageResource(BulbShining.get(i));
-            }
-            i++;
-        }
 
         mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated;
 
