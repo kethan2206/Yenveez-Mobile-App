@@ -55,6 +55,7 @@ public class Reset_Password extends AppCompatActivity {
                                 finish();
                             } else {
                                 Toast.makeText(Reset_Password.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                progressBarReset.setVisibility(View.GONE);
                             }
                         }
                     });
