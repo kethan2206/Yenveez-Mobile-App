@@ -6,13 +6,20 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -29,6 +36,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,8 +105,11 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<Integer> BulbShining = new ArrayList<>();
 
     float Energy;
-    public static float mEnergyGenerated = 0;
+    public static float mEnergyGenerated = 0, steps = 1;
     public static int BulbCounter = 0;
+
+    public static String notificationTitle = "Beacon Found";
+    public static String notificationContent = "Energy 0 Points 0";
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -252,6 +263,40 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     }
 
+    private void CreateNotification(){
+
+        @SuppressLint("RemoteViewLayout")
+        RemoteViews customNotification = new RemoteViews(getPackageName(),R.layout.custom_notification);
+
+        String id = "notification_channel";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = notificationManager.getNotificationChannel(id);
+            if (channel == null){
+                channel = new NotificationChannel(id,"Channel Title",NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setDescription("[Channel Description]");
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[] {0});
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+        Intent notificationIntent = new Intent(this,FindBeacon.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationContent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(false);
+
+        builder.setContentIntent(pendingIntent);
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.notify(1,builder.build());
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -332,6 +377,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
 
+
         for (KBeacon beacon: beacons) {
 
             /** get beacon adv common info*/
@@ -399,14 +445,16 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         }
         mStepCounterAndroid = sensorEvent.values[0];
 
-        float steps = mStepCounterAndroid - mInitialStepCount;
+        steps = mStepCounterAndroid - mInitialStepCount;
         energyGenerated = steps * 5;
         energyTextView.setText(String.valueOf(energyGenerated));
+
+        notificationContent = "Energy " + energyGenerated + "   " + "Points 0";
+        CreateNotification();
 
         /** setting up the Bulb Lighting Bar */
         if (steps % 5 == 0){
             BulbCounter++;
-            System.out.println("counter ++ " + BulbCounter);
             if (BulbCounter == 1){
                 activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
             } else if (BulbCounter == 2){
