@@ -123,7 +123,6 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(Login.this, Registration.class));
                 progressBarLog.setVisibility(View.GONE);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                finish();
             }
         },1000);
     }

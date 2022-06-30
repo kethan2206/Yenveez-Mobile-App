@@ -265,9 +265,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     private void CreateNotification(){
 
-        @SuppressLint("RemoteViewLayout")
-        RemoteViews customNotification = new RemoteViews(getPackageName(),R.layout.custom_notification);
-
         String id = "notification_channel";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
