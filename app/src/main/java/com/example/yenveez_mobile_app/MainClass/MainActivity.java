@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
-    TextView profile_name,profile_email, homepageStat, profile_bio,homepageEnergyScore;
+    TextView profile_name,profile_email, homepageStat, profile_bio,homepageEnergyScore, homePageCoinsScore;
+    public static int energyGenerated;
 
     /** onClick Logout Button */
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Alert dialogue box on pressing log out button
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("If you have logged in with Google or Facebook or Twitter then your all saved data will be deleted.\n\nDo you want to log out?")
+        builder.setMessage("Do you want to log out?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         homepageStat = (TextView) findViewById(R.id.homepageStat);
         profile_bio = (TextView) findViewById(R.id.profile_bio);
         homepageEnergyScore = (TextView) findViewById(R.id.homepageEnergyScore);
+        homePageCoinsScore = (TextView) findViewById(R.id.homePageCoinsScore);
 
 
         /** Bottom Navigation */
@@ -170,13 +172,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    homepageEnergyScore.setText(snapshot.child("EnergyGenerated").getValue().toString());
+                    energyGenerated = Integer.parseInt(snapshot.child("EnergyGenerated").getValue().toString());
+                    homepageEnergyScore.setText(Integer.toString(energyGenerated));
+                    homePageCoinsScore.setText(snapshot.child("RedeemCoin").getValue().toString());
                     UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
                     profile_name.setText(userData.getUserName());
                     profile_email.setText(userData.getUserEmail());
                     profile_bio.setText(userData.getUserBio());
-                    homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for 125 seconds.");
+                    int BulbGlowTime = energyGenerated / 10;
+                    homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for " + BulbGlowTime + " seconds.");
                     if (userData.getImageUrl().equals("default")){
                         profile_image.setImageResource(R.drawable.profile_default_pic);
                     } else {

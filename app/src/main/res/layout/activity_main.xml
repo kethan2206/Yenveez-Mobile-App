@@ -159,7 +159,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/coins"
+        android:id="@+id/homePageCoinsScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/comic_neue_bold"
@@ -183,7 +183,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/comic_neue_bold"
-        android:text="Congrats username!!! you have energized a 10W bulb for 125 seconds."
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"

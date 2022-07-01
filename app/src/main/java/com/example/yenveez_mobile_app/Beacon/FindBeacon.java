@@ -74,7 +74,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     private static final String TAG = "Beacon";
     public static final int REQUEST_ENABLE_BT = 1;
-    TextView energyTextView;
+    TextView energyTextView, redeemPointsText;
     ImageView closeAdBanner, activityBulb;
     ImageSlider AdsImage;
     CardView AdsBanner;
@@ -92,6 +92,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     public static float mStepCounterAndroid = 0;
     public static float mInitialStepCount = 0;
     public static float energyGenerated = 0;
+    public static int redeemPointsGenerated = 0;
 
     private KBeaconsMgr mBeaconsMgr;
     private int mScanFailedContinueNum = 0;
@@ -105,8 +106,9 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     final ArrayList<Integer> BulbShining = new ArrayList<>();
 
     float Energy;
+    int RedeemPoints;
     public static float mEnergyGenerated = 0, steps = 1;
-    public static int BulbCounter = 0;
+    public static int BulbCounter = 0, mRedeemPointsGenerated = 0;
 
     public static String notificationTitle = "Beacon Found";
     public static String notificationContent = "Energy 0 Points 0";
@@ -126,6 +128,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         firebaseUser = (FirebaseUser) mAuth.getCurrentUser();
 
         energyTextView = (TextView) findViewById(R.id.energyTextView);
+        redeemPointsText = (TextView) findViewById(R.id.redeemPointsText);
 
         AdsBanner = (CardView) findViewById(R.id.AdsBanner);
         AdsImage = (ImageSlider) findViewById(R.id.AdsImage);
@@ -245,13 +248,14 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         /**start scanning the beacon*/
         ScanBeacon();
 
-        /**  getting the value of energy from database */
+        /**  getting the value of energy and redeem points from database */
         databaseReference = (DatabaseReference) FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     Energy = Float.parseFloat(snapshot.child("EnergyGenerated").getValue().toString());
+                    RedeemPoints = Integer.parseInt(snapshot.child("RedeemCoin").getValue().toString());
                 }
             }
 
@@ -342,7 +346,9 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mStepCounterAndroid = 0;
         mInitialStepCount = 0;
         energyGenerated = (mStepCounterAndroid - mInitialStepCount) * 5;
+        redeemPointsGenerated = (int) (mStepCounterAndroid - mInitialStepCount) * 10;
         energyTextView.setText(String.valueOf(energyGenerated));
+        redeemPointsText.setText(String.valueOf(redeemPointsGenerated));
     }
 
     public void Stop(View view){
@@ -407,10 +413,15 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
             } else {
                 StopPedometer();
                 float finalEnergy = Energy + mEnergyGenerated;
+                int finalPoints = RedeemPoints + mRedeemPointsGenerated;
                 mEnergyGenerated = 0;
+                mRedeemPointsGenerated = 0;
+                BulbCounter = 0;
+                activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
 
-                if (finalEnergy != 0){
+                if (finalEnergy != 0 && finalPoints != 0){
                     databaseReference.child("EnergyGenerated").setValue(finalEnergy);
+                    databaseReference.child("RedeemCoin").setValue(finalPoints);
                 }
             }
 
@@ -443,10 +454,13 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         mStepCounterAndroid = sensorEvent.values[0];
 
         steps = mStepCounterAndroid - mInitialStepCount;
-        energyGenerated = steps * 5;
+        System.out.println("steps" + steps);
+        energyGenerated = steps * 5; //calculating energy on basis of steps
+        redeemPointsGenerated = (int) steps * 10; //calculating redeem Points on basis of steps
         energyTextView.setText(String.valueOf(energyGenerated));
+        redeemPointsText.setText(String.valueOf(redeemPointsGenerated));
 
-        notificationContent = "Energy " + energyGenerated + "   " + "Points 0";
+        notificationContent = "Energy " + energyGenerated + "   " + "Points " + redeemPointsGenerated;
         CreateNotification();
 
         /** setting up the Bulb Lighting Bar */
@@ -468,6 +482,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         }
 
         mEnergyGenerated = (mEnergyGenerated * 0) + energyGenerated; //Calculating net energy
+        mRedeemPointsGenerated = (mRedeemPointsGenerated * 0) + redeemPointsGenerated; //calculating net points
 
         //Showing Ad Banner
         if (steps >=0 && steps <= 2){
