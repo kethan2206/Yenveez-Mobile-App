@@ -51,6 +51,20 @@ public class EditProfile extends AppCompatActivity {
     ProgressBar editProfilePicProgress, progressBarMain2;
     String userName, userEmail, userBio;
 
+    public static int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        } else
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+        backPressed = System.currentTimeMillis();
+    }
+
     /** onClick Edit Profile pic button */
     public void EditProfilePic(View view){
         launcher.launch("image/*");

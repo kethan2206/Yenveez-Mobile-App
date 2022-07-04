@@ -67,6 +67,20 @@ public class MainActivity extends AppCompatActivity {
     TextView profile_name,profile_email, homepageStat, profile_bio,homepageEnergyScore, homePageCoinsScore;
     public static int energyGenerated;
 
+    public static int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        } else
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+        backPressed = System.currentTimeMillis();
+    }
+
     /** onClick Logout Button */
 
     public void Logout(View view){

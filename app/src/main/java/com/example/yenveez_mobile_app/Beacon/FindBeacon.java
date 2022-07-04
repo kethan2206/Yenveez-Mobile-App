@@ -82,7 +82,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth;
 
-    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner, databaseReference;
+    DatabaseReference databaseReferenceProfilePic, databaseReferenceMacId, databaseReferenceAdsBanner, databaseReference, databaseReferenceBulbShine;
 
     BluetoothAdapter bluetoothAdapter;
 
@@ -100,18 +100,35 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     int beaconRssi;
     public static final int BLUETOOTH_REQ_CODE = 1;
     public static  boolean CHECK_ALL_PERMISSION = false;
+    public static boolean IS_BEACON_CONNECTED = false;
 
     final ArrayList<String> UuidList = new ArrayList<>();
     final ArrayList<SlideModel> AdsBannerUrlList = new ArrayList<>();
-    final ArrayList<Integer> BulbShining = new ArrayList<>();
 
     float Energy;
-    int RedeemPoints;
+    int RedeemPoints, BulbCounter;
     public static float mEnergyGenerated = 0, steps = 1;
-    public static int BulbCounter = 0, mRedeemPointsGenerated = 0;
+    public static int mRedeemPointsGenerated = 0;
 
-    public static String notificationTitle = "Beacon Found";
-    public static String notificationContent = "Energy 0 Points 0";
+    NotificationManager notificationManager;
+    private static final String NOTIFICATION_CHANNEL_ID = "notification_channel";
+    private static final int NOTIFICATION_ID = 100;
+    public static String notificationTitle = "";
+    public static String notificationContent = "";
+    String UserName;
+    public static int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        } else
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+        backPressed = System.currentTimeMillis();
+    }
 
     @SuppressLint({"SetTextI18n", "MissingPermission"})
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -135,12 +152,6 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         closeAdBanner = (ImageView) findViewById(R.id.closeAdBanner);
         activityBulb = (ImageView) findViewById(R.id.activityBulb);
 
-        BulbShining.add(R.drawable.activitybulbshinningprogress5);
-        BulbShining.add(R.drawable.activitybulbshinningprogress2);
-        BulbShining.add(R.drawable.activitybulbshinningprogress3);
-        BulbShining.add(R.drawable.activitybulbshinningprogress4);
-        BulbShining.add(R.drawable.activity1bulbshinningprogress);
-
         /** Bottom Navigation */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
 
@@ -153,24 +164,20 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                     case R.id.navHome:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0,0);
-                        finish();
                         return true;
                     case R.id.navEditProfile:
                         startActivity(new Intent(getApplicationContext(), EditProfile.class));
                         overridePendingTransition(0,0);
-                        finish();
                         return true;
                     case R.id.navMenu:
                         startActivity(new Intent(getApplicationContext(), About.class));
                         overridePendingTransition(0,0);
-                        finish();
                         return true;
                     case R.id.navActivity:
                         return true;
                     case R.id.navCoupons:
                         startActivity(new Intent(getApplicationContext(), Redeem_Activity.class));
                         overridePendingTransition(0,0);
-                        finish();
                         return true;
                 }
                 return false;
@@ -256,6 +263,26 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 if (snapshot.exists()){
                     Energy = Float.parseFloat(snapshot.child("EnergyGenerated").getValue().toString());
                     RedeemPoints = Integer.parseInt(snapshot.child("RedeemCoin").getValue().toString());
+                    UserData userData = snapshot.getValue(UserData.class);
+                    assert userData != null;
+                    UserName = userData.getUserName();
+                    notificationTitle = "Welcome " + UserName;
+                    notificationContent = "Tap to view your activity";
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        databaseReferenceBulbShine = (DatabaseReference) FirebaseDatabase.getInstance().getReference();
+        databaseReferenceBulbShine.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    BulbCounter = Integer.parseInt(snapshot.child("Bulb Shine Counter").getValue().toString());
                 }
             }
 
@@ -269,33 +296,37 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
 
     private void CreateNotification(){
 
-        String id = "notification_channel";
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = notificationManager.getNotificationChannel(id);
-            if (channel == null){
-                channel = new NotificationChannel(id,"Channel Title",NotificationManager.IMPORTANCE_DEFAULT);
-                channel.setDescription("[Channel Description]");
-                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-                channel.enableVibration(true);
-                channel.setVibrationPattern(new long[] {0});
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
+        Notification notification;
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         Intent notificationIntent = new Intent(this,FindBeacon.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,id)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationContent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(false);
 
-        builder.setContentIntent(pendingIntent);
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.notify(1,builder.build());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            notification = new Notification.Builder(this)
+                    .setContentTitle(notificationTitle)
+                    .setContentText(notificationContent)
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setChannelId(NOTIFICATION_CHANNEL_ID)
+                    .setOngoing(false)
+                    .build();
+            notificationManager.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID,"New channel",
+                    NotificationManager.IMPORTANCE_HIGH));
+        }
+        else {
+            notification = new Notification.Builder(this)
+                    .setContentTitle(notificationTitle)
+                    .setContentText(notificationContent)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(false)
+                    .setOngoing(false)
+                    .build();
+        }
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     @SuppressLint("SetTextI18n")
@@ -351,16 +382,13 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         redeemPointsText.setText(String.valueOf(redeemPointsGenerated));
     }
 
-    public void Stop(View view){
-        StopPedometer();
-    }
-
     /**Beacon Scan function*/
     public void ScanBeacon(){
         int nStartScan = mBeaconsMgr.startScanning();
         if (nStartScan == 0)
         {
             Log.v(TAG, "start scan success");
+            System.out.println("is beacon " + IS_BEACON_CONNECTED);
         }
         else if (nStartScan == KBeaconsMgr.SCAN_ERROR_BLE_NOT_ENABLE) {
             Toast.makeText(this, "Bluetooth function is not enable", Toast.LENGTH_SHORT).show();
@@ -380,6 +408,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     @Override
     public void onBeaconDiscovered(KBeacon[] beacons) {
 
+        IS_BEACON_CONNECTED = true;
 
         for (KBeacon beacon: beacons) {
 
@@ -417,7 +446,8 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 mEnergyGenerated = 0;
                 mRedeemPointsGenerated = 0;
                 BulbCounter = 0;
-                activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
+                databaseReferenceBulbShine.child("Bulb Shine Counter").setValue(BulbCounter);
+                ///activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
 
                 if (finalEnergy != 0 && finalPoints != 0){
                     databaseReference.child("EnergyGenerated").setValue(finalEnergy);
@@ -460,12 +490,12 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         energyTextView.setText(String.valueOf(energyGenerated));
         redeemPointsText.setText(String.valueOf(redeemPointsGenerated));
 
-        notificationContent = "Energy " + energyGenerated + "   " + "Points " + redeemPointsGenerated;
-        CreateNotification();
+        System.out.println("bulb" + BulbCounter);
 
         /** setting up the Bulb Lighting Bar */
         if (steps % 5 == 0){
             BulbCounter++;
+            databaseReferenceBulbShine.child("Bulb Shine Counter").setValue(BulbCounter);
             if (BulbCounter == 1){
                 activityBulb.setImageResource(R.drawable.activity1bulbshinningprogress);
             } else if (BulbCounter == 2){
@@ -478,6 +508,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                 activityBulb.setImageResource(R.drawable.activitybulbshinningprogress5);
             } else if (BulbCounter > 5){
                 BulbCounter = 0;
+                databaseReferenceBulbShine.child("Bulb Shine Counter").setValue(BulbCounter);
             }
         }
 
@@ -487,6 +518,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
         //Showing Ad Banner
         if (steps >=0 && steps <= 2){
             AdsBanner.setVisibility(View.VISIBLE);
+            CreateNotification();
         }
     }
 
@@ -500,6 +532,7 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
     @Override
     protected void onResume() {
         super.onResume();
+        databaseReferenceBulbShine.child("Bulb Shine Counter").setValue(BulbCounter);
     }
 
     @Override

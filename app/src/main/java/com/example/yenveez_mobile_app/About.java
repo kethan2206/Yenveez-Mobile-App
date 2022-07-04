@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
@@ -13,6 +14,20 @@ import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class About extends AppCompatActivity {
+
+    public static int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        } else
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+        backPressed = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

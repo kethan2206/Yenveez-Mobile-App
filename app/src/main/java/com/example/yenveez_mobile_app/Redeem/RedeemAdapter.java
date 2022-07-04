@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -42,6 +43,12 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.ViewHolder
         holder.redeemItemTitle.setText(redeemData.getRedeemItemName());
         holder.redeemItemDescription.setText(redeemData.getRedeemItemDescription());
         holder.RedeemCardView.setBackgroundColor(holder.itemView.getResources().getColor(getRandomBackgroundColour(),null));
+        holder.RedeemCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Coupons will be available soon", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         String imageUri = redeemData.getRedeemItemIconUrl();
         Glide.with(context.getApplicationContext()).load(imageUri).into(holder.redeemItemPic);
