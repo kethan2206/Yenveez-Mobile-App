@@ -1,4 +1,4 @@
-package com.example.yenveez_mobile_app;
+package com.example.yenveez_mobile_app.MainClass;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,13 +15,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.yenveez_mobile_app.About;
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
-import com.example.yenveez_mobile_app.MainClass.MainActivity;
-import com.example.yenveez_mobile_app.MainClass.UserData;
+import com.example.yenveez_mobile_app.R;
 import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

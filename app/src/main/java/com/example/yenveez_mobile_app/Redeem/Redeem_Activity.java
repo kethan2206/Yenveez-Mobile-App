@@ -1,10 +1,7 @@
 package com.example.yenveez_mobile_app.Redeem;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,20 +9,16 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yenveez_mobile_app.About;
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
-import com.example.yenveez_mobile_app.EditProfile;
+import com.example.yenveez_mobile_app.MainClass.EditProfile;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

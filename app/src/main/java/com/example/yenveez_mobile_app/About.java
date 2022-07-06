@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
+import com.example.yenveez_mobile_app.MainClass.EditProfile;
 import com.example.yenveez_mobile_app.MainClass.MainActivity;
 import com.example.yenveez_mobile_app.Redeem.Redeem_Activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

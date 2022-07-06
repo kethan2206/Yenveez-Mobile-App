@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Yenveez_Mobile_App">
         <activity
-            android:name=".EditProfile"
+            android:name=".MainClass.EditProfile"
             android:exported="false" />
         <activity
             android:name=".About"
