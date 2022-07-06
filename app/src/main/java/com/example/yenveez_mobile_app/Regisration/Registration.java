@@ -29,6 +29,14 @@ import java.util.HashMap;
 
 public class Registration extends AppCompatActivity {
 
+    EditText editText_name, editText_EmailReg, editText_passReg, editText_ConfirmPassReg;
+    ProgressBar progressBarReg;
+    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
+    DatabaseReference databaseReference; //Creating reference for Database
+
+    int RedeemCoin = 0;
+    float EnergyGenerated = 0;
+
     public static int TIME_INTERVAL = 2000;
     private long backPressed;
 
@@ -42,6 +50,7 @@ public class Registration extends AppCompatActivity {
 
         backPressed = System.currentTimeMillis();
     }
+
 
     /** onClick Register Button */
 
@@ -105,19 +114,11 @@ public class Registration extends AppCompatActivity {
             @Override
             public void run() {
                 startActivity(new Intent(Registration.this,Login.class));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
             }
         },1000);
     }
-
-    EditText editText_name, editText_EmailReg, editText_passReg, editText_ConfirmPassReg;
-    ProgressBar progressBarReg;
-    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
-    DatabaseReference databaseReference; //Creating reference for Database
-
-    int RedeemCoin = 0;
-    float EnergyGenerated = 0;
 
     @SuppressLint("CutPasteId")
     @Override

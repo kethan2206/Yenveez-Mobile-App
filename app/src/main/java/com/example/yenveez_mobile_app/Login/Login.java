@@ -2,6 +2,8 @@ package com.example.yenveez_mobile_app.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,6 +60,31 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
+
+    EditText editText_EmailLog, editText_PasswordLog;
+    ProgressBar progressBarLog;
+    ConstraintLayout loginConstraint;
+
+    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
+
+    GoogleSignInClient mGoogleSignInClient;
+
+    DatabaseReference databaseReference;
+
+    CallbackManager callbackManager; //Facebook callBackManager
+
+    int RedeemCoin = 0; //Veez coin
+
+    FirebaseStorage firebaseStorage;
+
+    ImageView hide_show_password;
+
+    Boolean isShown = false;
+
+    ConstraintSet constraintSetShown = new ConstraintSet();
+    ConstraintSet constraintSetHide = new ConstraintSet();
+
+    private static final int RC_SIGN_IN = 100; // Can be any integer unique to the Activity.
 
     public static int TIME_INTERVAL = 2000;
     private long backPressed;
@@ -121,7 +149,7 @@ public class Login extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(Login.this, Reset_Password.class));
                 progressBarLog.setVisibility(View.GONE);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         },1000);
     }
@@ -136,7 +164,8 @@ public class Login extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(Login.this, Registration.class));
                 progressBarLog.setVisibility(View.GONE);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
             }
         },1000);
     }
@@ -161,27 +190,6 @@ public class Login extends AppCompatActivity {
         SignInTwitter();
     }
 
-    EditText editText_EmailLog, editText_PasswordLog;
-    ProgressBar progressBarLog;
-
-    FirebaseAuth mAuth; //Creating reference for Firebase Authentication
-
-    GoogleSignInClient mGoogleSignInClient;
-
-    DatabaseReference databaseReference;
-
-    CallbackManager callbackManager; //Facebook callBackManager
-
-    int RedeemCoin = 0; //Veez coin
-
-
-    FirebaseStorage firebaseStorage;
-
-    ImageView hide_show_password;
-
-
-    private static final int RC_SIGN_IN = 100; // Can be any integer unique to the Activity.
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +205,12 @@ public class Login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance(); //getting the instance for Firebase Authentication
 
+        loginConstraint = (ConstraintLayout) findViewById(R.id.loginConstraint);
+
+        loginConstraint.setTranslationY(1000);
+        loginConstraint.setAlpha(0);
+        loginConstraint.animate().translationY(0).alpha(1).setDuration(400).setStartDelay(300).start();
+
 
         /** Configure Google Sign in */
 
@@ -206,6 +220,8 @@ public class Login extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
 
         //Facebook login config
 //        callbackManager = CallbackManager.Factory.create();
@@ -240,7 +256,7 @@ public class Login extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK); //Used to kill the login activity once it go to the MainActivity
                     startActivity(intent);
                     Toast.makeText(Login.this, "Logged in Successfully", Toast.LENGTH_SHORT).show();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 } else {
                     Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

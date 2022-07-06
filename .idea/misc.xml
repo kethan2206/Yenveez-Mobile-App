@@ -45,7 +45,7 @@
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro1.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro2.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro3.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_redeem.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_redeem_item_details.xml" value="0.27447916666666666" />
@@ -58,6 +58,7 @@
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar_fourth.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/fragment_nav_bar_second.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/icon_button_background.xml" value="0.2439814814814815" />
+        <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/login_animation_layout.xml" value="0.2734375" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/reddem_items.xml" value="0.2734375" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/AMARTYA.000/StudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items_popup.xml" value="0.2734375" />

@@ -19,20 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Reset_Password extends AppCompatActivity {
 
-    public static int TIME_INTERVAL = 2000;
-    private long backPressed;
-
-    @Override
-    public void onBackPressed() {
-        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()){
-            super.onBackPressed();
-            return;
-        } else
-            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
-
-        backPressed = System.currentTimeMillis();
-    }
-
     public void Reset(View view){
         String resetEmail = editText_EmailReset.getText().toString();
 
