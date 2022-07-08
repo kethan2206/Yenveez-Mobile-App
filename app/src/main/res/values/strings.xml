@@ -6,11 +6,11 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">ef07f5826ee3cf70278c73f26e57cbcd</string>
     <string name="location_permit_needed_for_ble">The bluetooth need location permission during scan</string>
-    <string name="welcome">Hey, welcome!!! you are one step closer to becoming a green warrior.</string>
-    <string name="intro_2ndpara">Now, your footsteps will generate electricity. This is your opportunity to contribute towards a cleaner world.</string>
-    <string name="intro_3rdpara">You will be creating a cleaner and better world for the next generation. You will also be rewarded with coupons, offers, points and a lot more.</string>
+    <string name="welcome">Hey, welcome!!! You are one step closer to becoming a Green Warrior.</string>
+    <string name="intro_2ndpara">Now, your footsteps will generate electricity.</string>
+    <string name="intro_3rdpara">Together, we will create a cleaner and better world for the next generation.</string>
     <string name="intro_4thpara">All you have to do is. Just walk, jump, run on Yenveez Floor tiles.</string>
-    <string name="intro_5thpara">Let\'s start our journey towards a cleaner and better world.</string>
-
-
+    <string name="intro_5thpara">You will be rewarded with coupons, offers, points and a lot more. Let\'s start our journey towards a cleaner and better world.</string>
+    <string name="email">Email</string>
+    <string name="new_user_text">New here? Join us</string>
 </resources>

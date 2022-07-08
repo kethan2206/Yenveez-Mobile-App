@@ -17,6 +17,8 @@
     <color name="darker_button_background">#1adb61</color>
     <color name="border">#45ffbe</color>
     <color name="transparent">#0000ffff </color>
+    <color name="menu_button_pink1">#FFC0CB</color>
+    <color name="menu_button_pink2">#E861A0</color>
 
     <color name="coupon_blue">#ffbcf0e8</color>
     <color name="coupon_green">#ffbef0bc</color>

@@ -17,6 +17,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
     <ImageView
         android:id="@+id/editProfileGreenIcons"
         android:layout_width="0dp"
@@ -32,29 +60,30 @@
 
     <ImageView
         android:id="@+id/editProfileBackground"
-        android:layout_width="450dp"
-        android:layout_height="610dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintDimensionRatio="1:1.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
         app:srcCompat="@drawable/loginbox1" />
 
     <TextView
         android:id="@+id/editProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="Name"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/editProfileEditName"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileBackground"
         app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editProfilePhoto"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -64,9 +93,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/maskgroup1"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileBackground"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editProfileName"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -77,12 +107,11 @@
         android:layout_marginTop="32dp"
         android:text="Email"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileBackground"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editProfileEditName"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -91,11 +120,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/maskgroup1"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileBackground"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editProfileUserName"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -106,12 +136,11 @@
         android:layout_marginTop="32dp"
         android:text="Bio"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editProfileBackground"
         app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editProfileEditEmail"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -121,11 +150,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/maskgroup1"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/editProfileBackground"
+        app:layout_constraintEnd_toEndOf="@id/editProfileBackground"
+        app:layout_constraintStart_toStartOf="@+id/editProfileBackground"
         app:layout_constraintTop_toBottomOf="@+id/editBio"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -165,7 +197,7 @@
         android:fontFamily="@font/comic_neue_bold"
         android:text="Edit profile"
         android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,14 +208,15 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/editProfilePhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginTop="20dp"
         android:src="@drawable/profile_default_pic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editProfileGreenIcons"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editProfileGreenIcons"
+        app:layout_constraintBottom_toTopOf="@id/editProfileName"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

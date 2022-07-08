@@ -14,37 +14,67 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/greenbackgrounficons"
-        tools:ignore="contentDescription" />
-
-    <ImageView
-        android:id="@+id/intro2GreenPath"
-        android:layout_width="400dp"
-        android:layout_height="380dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/greenbackgrounficons"
+        tools:ignore="contentDescription" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <ImageView
+        android:id="@+id/intro2GreenPath"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/intro2BluePath"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:srcCompat="@drawable/intro2greenpath"
         tools:ignore="contentDescription" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/intro2GirlOnCycle"
-        android:layout_width="310dp"
-        android:layout_height="230dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="onClickIntro2"
-        app:layout_constraintBottom_toBottomOf="@+id/intro2GreenPath"
-        app:layout_constraintEnd_toEndOf="@+id/intro2GreenPath"
-        app:layout_constraintStart_toStartOf="@+id/intro2GreenPath"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="@+id/intro2GreenPath"
         app:layout_constraintVertical_bias="0.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/introgirlonthebicycle"
-        tools:ignore="contentDescription" />
+        tools:ignore="contentDescription,SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/intro3rdPara"
@@ -52,37 +82,36 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/comic_neue_bold"
         android:text="@string/intro_3rdpara"
+        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/intro2GreenPath"
         app:layout_constraintEnd_toEndOf="@+id/intro2GreenPath"
         app:layout_constraintStart_toStartOf="@+id/intro2GreenPath"
-        app:layout_constraintTop_toBottomOf="@+id/intro2GirlOnCycle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/intro2GirlOnCycle" />
 
 
     <ImageView
         android:id="@+id/intro2BluePath"
-        android:layout_width="400dp"
-        android:layout_height="290dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/intro2GreenPath"
         app:srcCompat="@drawable/intro2bluepath"
         tools:ignore="contentDescription" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/intro2jumping"
-        android:layout_width="310dp"
-        android:layout_height="310dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/intro2BluePath"
-        app:layout_constraintStart_toStartOf="@+id/intro2BluePath"
-        app:layout_constraintTop_toTopOf="@+id/intro2BluePath"
-        app:layout_constraintVertical_bias="1.0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/guideline4"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/intro4thPara"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/introjumping"
@@ -92,16 +121,18 @@
         android:id="@+id/intro4thPara"
         android:layout_width="230dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="20dp"
         android:fontFamily="@font/comic_neue_bold"
         android:text="@string/intro_4thpara"
+        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/intro2BluePath"
+        app:layout_constraintBottom_toTopOf="@+id/intro2jumping"
         app:layout_constraintEnd_toEndOf="@+id/intro2BluePath"
         app:layout_constraintStart_toStartOf="@+id/intro2BluePath"
-        app:layout_constraintTop_toTopOf="@+id/intro2BluePath"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintTop_toTopOf="@+id/intro2BluePath" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
