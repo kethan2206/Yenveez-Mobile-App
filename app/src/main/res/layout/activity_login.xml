@@ -88,7 +88,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/loginConstraint"
-        android:layout_width="match_parent"
+        android:layout_width="430dp"
         android:layout_height="0dp"
         android:background="@drawable/loginbox"
         app:layout_constraintBottom_toTopOf="@id/guideline4"
@@ -98,11 +98,10 @@
 
         <EditText
             android:id="@+id/editText_EmailLog"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="8:1.5"
-            android:layout_marginTop="75dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
+            android:layout_marginTop="75dp"
             android:layout_marginEnd="60dp"
             android:autofillHints="username"
             android:background="@drawable/maskgroup1"
@@ -111,19 +110,19 @@
             android:padding="10dp"
             android:textAlignment="center"
             android:textColorHint="#757575"
+            app:layout_constraintDimensionRatio="8:1.5"
             app:layout_constraintEnd_toEndOf="@+id/loginConstraint"
             app:layout_constraintStart_toStartOf="@+id/loginConstraint"
-            app:layout_constraintTop_toTopOf="@+id/loginConstraint"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/loginConstraint" />
 
         <ImageView
             android:id="@+id/imageView11"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
-            android:layout_marginStart="5dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/editText_EmailLog"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@+id/editText_EmailLog"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/editText_EmailLog"
             app:layout_constraintTop_toTopOf="@+id/editText_EmailLog"
@@ -132,21 +131,20 @@
 
         <EditText
             android:id="@+id/editText_PasswordLog"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="8:1.5"
-            android:layout_marginTop="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
+            android:layout_marginTop="35dp"
             android:layout_marginEnd="60dp"
             android:background="@drawable/maskgroup1"
             android:hint="Password"
             android:inputType="textPassword"
             android:textAlignment="center"
             android:textColorHint="#757575"
+            app:layout_constraintDimensionRatio="8:1.5"
             app:layout_constraintEnd_toEndOf="@+id/loginConstraint"
             app:layout_constraintStart_toStartOf="@+id/loginConstraint"
-            app:layout_constraintTop_toBottomOf="@+id/editText_EmailLog"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_EmailLog" />
 
         <ImageView
             android:id="@+id/padlockPassword"
@@ -167,21 +165,20 @@
             android:id="@+id/forgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="ForgotPass"
             android:layout_marginTop="20dp"
+            android:onClick="ForgotPass"
             android:text="Forgot Password?"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/editText_PasswordLog"
             app:layout_constraintEnd_toEndOf="@+id/loginConstraint"
             app:layout_constraintStart_toStartOf="@+id/loginConstraint"
+            app:layout_constraintTop_toBottomOf="@id/editText_PasswordLog"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/button_Login"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="10:4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/signinbutton"
@@ -191,21 +188,22 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintDimensionRatio="10:4"
             app:layout_constraintEnd_toEndOf="@+id/loginConstraint"
             app:layout_constraintStart_toStartOf="@+id/loginConstraint"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[OR]"
             android:layout_marginBottom="20dp"
+            android:text="[OR]"
+            app:layout_constraintBottom_toTopOf="@+id/newRegister"
             app:layout_constraintEnd_toEndOf="@+id/loginConstraint"
             app:layout_constraintStart_toStartOf="@+id/loginConstraint"
-            app:layout_constraintBottom_toTopOf="@+id/newRegister"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView

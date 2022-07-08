@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBarMain, progressProfilePic;
     ImageView profile_image;
     TextView profile_name,profile_email, homepageStat, profile_bio,homepageEnergyScore, homePageCoinsScore;
-    public static int energyGenerated;
+    public static float energyGenerated;
 
     public static int TIME_INTERVAL = 2000;
     private long backPressed;
@@ -173,15 +173,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    energyGenerated = Integer.parseInt(snapshot.child("EnergyGenerated").getValue().toString());
-                    homepageEnergyScore.setText(Integer.toString(energyGenerated));
+                    energyGenerated = Float.parseFloat(snapshot.child("EnergyGenerated").getValue().toString());
+                    homepageEnergyScore.setText(Float.toString(energyGenerated));
                     homePageCoinsScore.setText(snapshot.child("RedeemCoin").getValue().toString());
                     UserData userData = snapshot.getValue(UserData.class);
                     assert userData != null;
                     profile_name.setText(userData.getUserName());
                     profile_email.setText(userData.getUserEmail());
                     profile_bio.setText(userData.getUserBio());
-                    int BulbGlowTime = energyGenerated / 10;
+                    int BulbGlowTime = (int) energyGenerated / 10;
                     homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for " + BulbGlowTime + " seconds.");
                     if (userData.getImageUrl().equals("default")){
                         profile_image.setImageResource(R.drawable.profile_default_pic);

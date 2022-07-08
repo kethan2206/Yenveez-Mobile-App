@@ -13,8 +13,8 @@
 
     <item
         android:id="@+id/navMenu"
-        android:title="Menu"
-        android:icon="@drawable/homepagemenu"/>
+        android:icon="@drawable/homepagemenu1"
+        android:title="What we do" />
 
     <item
         android:id="@+id/navActivity"
