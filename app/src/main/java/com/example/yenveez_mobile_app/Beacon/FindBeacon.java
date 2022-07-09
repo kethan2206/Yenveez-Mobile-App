@@ -155,20 +155,24 @@ public class FindBeacon extends AppCompatActivity implements KBeaconsMgr.KBeacon
                     case R.id.navHome:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
                     case R.id.navEditProfile:
                         startActivity(new Intent(getApplicationContext(), EditProfile.class));
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
                     case R.id.navMenu:
                         startActivity(new Intent(getApplicationContext(), About.class));
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
                     case R.id.navActivity:
                         return true;
                     case R.id.navCoupons:
                         startActivity(new Intent(getApplicationContext(), Redeem_Activity.class));
                         overridePendingTransition(0,0);
+                        finish();
                         return true;
                 }
                 return false;
