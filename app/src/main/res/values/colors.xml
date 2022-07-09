@@ -26,4 +26,5 @@
     <color name="coupon_pink">#ffd6bcf0</color>
     <color name="coupon_purple">#ffbcc1f0</color>
     <color name="coupon_yellow">#fff0f0bc</color>
+    <color name="item_select">#B9B7B7</color>
 </resources>

@@ -12,5 +12,9 @@
     <string name="intro_4thpara">All you have to do is. Just walk, jump, run on Yenveez Floor tiles.</string>
     <string name="intro_5thpara">You will be rewarded with coupons, offers, points and a lot more. Let\'s start our journey towards a cleaner and better world.</string>
     <string name="email">Email</string>
+
     <string name="new_user_text">New here? Join us</string>
+    <string name="yenveez_vision">Yenveez Vision</string>
+    <string name="yenveez_app">Yenveez App</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>

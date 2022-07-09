@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yenveez_mobile_app.Beacon.FindBeacon;
@@ -18,6 +23,8 @@ public class About extends AppCompatActivity {
 
     public static int TIME_INTERVAL = 2000;
     private long backPressed;
+    ListView listView;
+    TextView about_text;
 
     @Override
     public void onBackPressed() {
@@ -34,6 +41,12 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        listView = (ListView) findViewById(R.id.listView);
+        about_text = (TextView) findViewById(R.id.about_text);
+        about_text.setText(R.string.yenveez_vision);
+
+        String [] aboutItems = {"Yenveez Vision", "Yenveez App", "Share", "Privacy Policy"};
 
         /** Bottom Navigation */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -73,5 +86,36 @@ public class About extends AppCompatActivity {
                 return false;
             }
         });
+
+        ArrayAdapter<String > adapter = new ArrayAdapter<String>(About.this, android.R.layout.simple_dropdown_item_1line, aboutItems);
+        listView.setAdapter(adapter);
+        listView.setSelector(R.color.item_select);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+                    case 0:
+                        about_text.setText(R.string.yenveez_vision);
+                        break;
+                    case 1:
+                        about_text.setText(R.string.yenveez_app);
+                        break;
+                    case 2:
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        String body = "Download this App";
+                        String sub = "http://play.google.com";
+                        intent.putExtra(Intent.EXTRA_TEXT,body);
+                        intent.putExtra(Intent.EXTRA_TEXT,sub);
+                        startActivity(Intent.createChooser(intent,"Share Using"));
+                        break;
+                    case 3:
+                        about_text.setText(R.string.privacy_policy);
+                        break;
+                }
+            }
+        });
+
     }
 }
