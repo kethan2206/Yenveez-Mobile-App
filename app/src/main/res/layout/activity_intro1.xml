@@ -172,6 +172,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
+            android:onClick="OnClickIntro1"
             app:lottie_rawRes="@raw/down_arrow"
             tools:ignore="contentDescription" />
 

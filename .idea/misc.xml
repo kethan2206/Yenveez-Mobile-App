@@ -74,18 +74,26 @@
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/progress_background.xml" value="0.1265" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/redeem_item_background.xml" value="0.161" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/drawable/screen_background.xml" value="0.161" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_login.xml" value="0.31338178708849934" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_registration.xml" value="0.24791666666666667" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-land/activity_reset_password.xml" value="0.24791666666666667" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_find_beacon.xml" value="0.125" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_intro1.xml" value="0.125" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_intro2.xml" value="0.16" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_intro3.xml" value="0.125" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_login.xml" value="0.125" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.128" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_registration.xml" value="0.11200000000000002" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_about.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_edit_profile.xml" value="0.4" />
-        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_find_beacon.xml" value="0.25" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_find_beacon.xml" value="0.19088541666666667" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro1.xml" value="0.264" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro2.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_intro3.xml" value="0.25" />
-        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_login.xml" value="0.4" />
-        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_login.xml" value="0.20521590423257802" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_main.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_redeem.xml" value="0.25" />
-        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_registration.xml" value="0.4" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_registration.xml" value="0.152" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_reset_password.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/menu/bottom_menu.xml" value="0.25" />
