@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/screen_background"
+    tools:context=".Splash.Splash_Screen">
+
+
+    <ImageView
+        android:id="@+id/splashScreenLogoBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/splashscreenlogobackground"
+        tools:ignore="contentDescription"/>
+
+    <ImageView
+        android:id="@+id/splashScreenGreenBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/greenbackgrounficons"
+        tools:ignore="contentDescription" />
+
+    <ImageView
+        android:id="@+id/splashScreenLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="2:0.3"
+        app:layout_constraintBottom_toBottomOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintEnd_toEndOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintStart_toStartOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintTop_toTopOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintVertical_bias="0.43"
+        app:srcCompat="@drawable/blacklogo1"
+        tools:ignore="contentDescription" />
+
+    <ImageView
+        android:id="@+id/splashScreenTagline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="2:0.1"
+        app:layout_constraintBottom_toBottomOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintEnd_toEndOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintHorizontal_bias="0.411"
+        app:layout_constraintStart_toStartOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintTop_toTopOf="@+id/splashScreenLogoBackground"
+        app:layout_constraintVertical_bias="0.572"
+        app:srcCompat="@drawable/tagline"
+        tools:ignore="contentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

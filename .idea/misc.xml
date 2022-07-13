@@ -84,6 +84,8 @@
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_login.xml" value="0.125" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.128" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_registration.xml" value="0.11200000000000002" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_reset_password.xml" value="0.125" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout-sw600dp/activity_splash_screen.xml" value="0.125" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_about.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_edit_profile.xml" value="0.4" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_find_beacon.xml" value="0.19088541666666667" />
@@ -95,6 +97,7 @@
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_redeem.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_registration.xml" value="0.152" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_reset_password.xml" value="0.25" />
+        <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/activity_splash_screen.xml" value="0.20521590423257802" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/layout/redeem_items.xml" value="0.25" />
         <entry key="..\:/Users/ketha/AndroidStudioProjects/Yenveez-Mobile-App/app/src/main/res/menu/bottom_menu.xml" value="0.25" />
       </map>
