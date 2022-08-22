@@ -6,14 +6,17 @@
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">ef07f5826ee3cf70278c73f26e57cbcd</string>
     <string name="location_permit_needed_for_ble">The bluetooth need location permission during scan</string>
-    <string name="welcome">Hey, welcome!!! You are one step closer to becoming a Green Warrior.</string>
-    <string name="intro_2ndpara">Now, your footsteps will generate electricity.</string>
-    <string name="intro_3rdpara">Together, we will create a cleaner and better world for the next generation.</string>
-    <string name="intro_4thpara">All you have to do is. Just walk, jump, run on Yenveez Floor tiles.</string>
+    <string name="welcome"><br>Hey, welcome!!! You are one\n</br> <br>step closer to becoming\n</br> <br>a Green Warrior.</br></string>
+    <string name="intro_2ndpara"><br>Now, your footsteps will\n</br> <br>generate electricity</br>.</string>
+    <string name="intro_3rdpara"><br>Together, we will create a\n</br> <br>cleaner and better world for\n</br> <br>the next generation.</br></string>
+    <string name="intro_4thpara"><br>All you have to do is.\n</br> <br>Just walk, jump, run on\n</br> <br>Yenveez Floor tiles.</br></string>
     <string name="intro_5thpara">
         <br>You will be rewarded with coupons, offers, points and a lot more.\n</br>
-        <br>Let\'s start our journey towards a cleaner and better world.</br>
+        <br>Let\'s start our journey towards a\n</br>
+        <br>cleaner and better world.</br>
     </string>
+    <string name="energy_generated"><br>Total energy\n</br> <br>generated (Joules)</br></string>
+    <string name="points">Total Veez points</string>
     <string name="email">Email</string>
 
     <string name="new_user_text">New here? Join us</string>

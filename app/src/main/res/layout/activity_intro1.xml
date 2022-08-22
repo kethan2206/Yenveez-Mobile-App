@@ -138,7 +138,7 @@
         android:id="@+id/intro2ndPara"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="80dp"
         android:fontFamily="@font/comic_neue_bold"
         android:text="@string/intro_2ndpara"
         android:textAlignment="center"
@@ -147,7 +147,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/introOrangePath"
         app:layout_constraintEnd_toEndOf="@+id/introOrangePath"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="@+id/introOrangePath" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     profile_email.setText(userData.getUserEmail());
                     profile_bio.setText(userData.getUserBio());
                     int BulbGlowTime = (int) energyGenerated / 10;
-                    homepageStat.setText("Congrats " + userData.getUserName() + " !!! you have energized a 10W bulb for " + BulbGlowTime + " seconds.");
+                    homepageStat.setText("Congrats " + userData.getUserName() + " !!! You have energized a 10W bulb for " + BulbGlowTime + " seconds.");
                     if (userData.getImageUrl().equals("default")){
                         profile_image.setImageResource(R.drawable.profile_default_pic);
                     } else {
